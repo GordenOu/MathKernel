@@ -1,0 +1,16 @@
+﻿{
+  "buildOptions": {
+    "allowUnsafe": true
+  },
+  "dependencies": {
+    "Core.Extensions": "0.4.1-alpha1"
+  },
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "NETStandard.Library": "1.6.0"
+      },
+      "imports": "dnxcore50"
+    }
+  }
+}
