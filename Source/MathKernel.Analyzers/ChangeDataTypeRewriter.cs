@@ -45,9 +45,17 @@ namespace MathKernel.Analyzers
 
         public override SyntaxNode VisitPredefinedType(PredefinedTypeSyntax node)
         {
-            if (MainDataType != DataType.Float)
+            if (MainDataType == DataType.Complexf)
             {
-                return base.VisitPredefinedType(node);
+                if (node.ToString() == "float")
+                {
+                    var newNode = node.WithKeyword(SyntaxFactory.ParseToken("double"));
+                    return newNode.WithTriviaFrom(node);
+                }
+                else
+                {
+                    return base.VisitPredefinedType(node);
+                }
             }
             if (node.ToString() != mainDataTypeName)
             {

@@ -36,11 +36,11 @@ namespace MathKernel.Analyzers
             context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.NamedType);
         }
 
-        private static ImmutableArray<string> dataTypeNames = ImmutableArray.Create(
-            "float",
-            "double",
-            "complexf",
-            "complex");
+        private static ImmutableArray<ImmutableArray<string>> dataTypeNames =
+            ImmutableArray.Create(
+                ImmutableArray.Create("float", "double", "complexf", "complex"),
+                ImmutableArray.Create("float", "double"),
+                ImmutableArray.Create("complexf", "complex"));
 
         private static DataType GetDataType(string typeName)
         {
@@ -68,12 +68,22 @@ namespace MathKernel.Analyzers
 
         private static void AnalyzeSymbol(SymbolAnalysisContext context)
         {
+            AnalyzeSymbol(context, "Duplicate", dataTypeNames[0]);
+            AnalyzeSymbol(context, "RealTypeDuplicate", dataTypeNames[1]);
+            AnalyzeSymbol(context, "ComplexTypeDuplicate", dataTypeNames[2]);
+        }
+
+        private static void AnalyzeSymbol(
+            SymbolAnalysisContext context,
+            string attributeName,
+            ImmutableArray<string> typeNames)
+        {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
             // Check attribute.
             var attributes =
                 (from attribute in namedTypeSymbol.GetAttributes()
-                 where attribute.AttributeClass.Name == "DuplicateAttribute"
+                 where attribute.AttributeClass.Name == attributeName + "Attribute"
                  where attribute.AttributeClass.ContainingNamespace.Name == "MathKernel"
                  select attribute).ToArray();
             if (attributes.Length == 0)
@@ -96,7 +106,7 @@ namespace MathKernel.Analyzers
             {
                 var duplicateAttribute = declaration.AttributeLists
                     .SelectMany(list => list.Attributes)
-                    .SingleOrDefault(attribute => attribute.Name.ToString() == "Duplicate");
+                    .SingleOrDefault(attribute => attribute.Name.ToString() == attributeName);
                 if (duplicateAttribute == null)
                 {
                     continue;
@@ -115,7 +125,7 @@ namespace MathKernel.Analyzers
                     continue;
                 }
                 string dataTypeName = typeOfExpressionSyntax.Type.ToString();
-                if (!dataTypeNames.Contains(dataTypeName))
+                if (!typeNames.Contains(dataTypeName))
                 {
                     continue;
                 }
