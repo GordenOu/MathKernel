@@ -6,6 +6,8 @@ namespace MathKernel
 {
     public static unsafe partial class BLAS
     {
+        #region Level 1
+
         #region asum
 
         private static float asum(VectorDescriptor descriptor, float* x)
@@ -412,6 +414,260 @@ namespace MathKernel
         }
 
         #endregion
+
+        #region rotm
+
+        private static void rotm(
+            VectorDescriptor xDescriptor, float* x,
+            VectorDescriptor yDescriptor, float* y,
+            float h11, float h12, float h21, float h22)
+        {
+            var h = stackalloc float[5];
+            h[1] = h11;
+            h[2] = h12;
+            h[3] = h21;
+            h[4] = h22;
+            if (h11 == 1 && h22 == 1)
+            {
+                if (h12 == 0 && h21 == 0)
+                {
+                    h[0] = -2;
+                }
+                else
+                {
+                    h[0] = 0;
+                }
+            }
+            else if (h12 == 1 && h21 == -1)
+            {
+                h[0] = 1;
+            }
+            else
+            {
+                h[0] = -1;
+            }
+
+            BLASNativeMethods.cblas_srotm(
+                xDescriptor.Size,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                y + yDescriptor.Offset, yDescriptor.Stride,
+                h);
+        }
+
+        private static void rotm(
+            VectorDescriptor xDescriptor, double* x,
+            VectorDescriptor yDescriptor, double* y,
+            double h11, double h12, double h21, double h22)
+        {
+            var h = stackalloc double[5];
+            h[1] = h11;
+            h[2] = h12;
+            h[3] = h21;
+            h[4] = h22;
+            if (h11 == 1 && h22 == 1)
+            {
+                if (h12 == 0 && h21 == 0)
+                {
+                    h[0] = -2;
+                }
+                else
+                {
+                    h[0] = 0;
+                }
+            }
+            else if (h12 == 1 && h21 == -1)
+            {
+                h[0] = 1;
+            }
+            else
+            {
+                h[0] = -1;
+            }
+
+            BLASNativeMethods.cblas_drotm(
+                xDescriptor.Size,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                y + yDescriptor.Offset, yDescriptor.Stride,
+                h);
+        }
+
+        #endregion
+
+        #region scal
+
+        private static void scal(float a, VectorDescriptor descriptor, float* x)
+        {
+            BLASNativeMethods.cblas_sscal(
+                descriptor.Size,
+                a,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        private static void scal(double a, VectorDescriptor descriptor, double* x)
+        {
+            BLASNativeMethods.cblas_dscal(
+                descriptor.Size,
+                a,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        private static void scal(complexf a, VectorDescriptor descriptor, complexf* x)
+        {
+            BLASNativeMethods.cblas_cscal(
+                descriptor.Size,
+                &a,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        private static void scal(complex a, VectorDescriptor descriptor, complex* x)
+        {
+            BLASNativeMethods.cblas_zscal(
+                descriptor.Size,
+                &a,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        private static void scal(float a, VectorDescriptor descriptor, complexf* x)
+        {
+            BLASNativeMethods.cblas_csscal(
+                descriptor.Size,
+                a,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        private static void scal(double a, VectorDescriptor descriptor, complex* x)
+        {
+            BLASNativeMethods.cblas_zdscal(
+                descriptor.Size,
+                a,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        #endregion
+
+        #region swap
+
+        private static void swap(
+            VectorDescriptor xDescriptor, float* x,
+            VectorDescriptor yDescriptor, float* y)
+        {
+            BLASNativeMethods.cblas_sswap(
+                xDescriptor.Size,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        private static void swap(
+            VectorDescriptor xDescriptor, double* x,
+            VectorDescriptor yDescriptor, double* y)
+        {
+            BLASNativeMethods.cblas_dswap(
+                xDescriptor.Size,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        private static void swap(
+            VectorDescriptor xDescriptor, complexf* x,
+            VectorDescriptor yDescriptor, complexf* y)
+        {
+            BLASNativeMethods.cblas_cswap(
+                xDescriptor.Size,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        private static void swap(
+            VectorDescriptor xDescriptor, complex* x,
+            VectorDescriptor yDescriptor, complex* y)
+        {
+            BLASNativeMethods.cblas_zswap(
+                xDescriptor.Size,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        #endregion
+
+        #region iamax
+
+        private static int iamax(VectorDescriptor descriptor, float* x)
+        {
+            return (int)BLASNativeMethods.cblas_isamax(
+                descriptor.Size,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        private static int iamax(VectorDescriptor descriptor, double* x)
+        {
+            return (int)BLASNativeMethods.cblas_idamax(
+                descriptor.Size,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        private static int iamax(VectorDescriptor descriptor, complexf* x)
+        {
+            return (int)BLASNativeMethods.cblas_icamax(
+                descriptor.Size,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        private static int iamax(VectorDescriptor descriptor, complex* x)
+        {
+            return (int)BLASNativeMethods.cblas_izamax(
+                descriptor.Size,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        #endregion
+
+        #region iamin
+
+        private static int iamin(VectorDescriptor descriptor, float* x)
+        {
+            return (int)BLASNativeMethods.cblas_isamin(
+                descriptor.Size,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        private static int iamin(VectorDescriptor descriptor, double* x)
+        {
+            return (int)BLASNativeMethods.cblas_idamin(
+                descriptor.Size,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        private static int iamin(VectorDescriptor descriptor, complexf* x)
+        {
+            return (int)BLASNativeMethods.cblas_icamin(
+                descriptor.Size,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        private static int iamin(VectorDescriptor descriptor, complex* x)
+        {
+            return (int)BLASNativeMethods.cblas_izamin(
+                descriptor.Size,
+                x + descriptor.Offset,
+                descriptor.Stride);
+        }
+
+        #endregion
+
+        #endregion
     }
 
     [Duplicate(typeof(float))]
@@ -516,6 +772,119 @@ namespace MathKernel
             fixed (float* xPtr = x.Storage, yPtr = y.Storage)
             {
                 copy(x.Descriptor, xPtr, y.Descriptor, yPtr);
+            }
+        }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Scale(float a, VectorDescriptor descriptor, float* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            scal(a, descriptor, x);
+        }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        public static void Scale(float a, Vector<float> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (float* xPtr = x.Storage)
+            {
+                scal(a, x.Descriptor, xPtr);
+            }
+        }
+
+        /// <summary>
+        /// (x, y) = (y, x).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Swap(
+            VectorDescriptor xDescriptor, float* x,
+            VectorDescriptor yDescriptor, float* y)
+        {
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+            if (xDescriptor.Size != yDescriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            swap(xDescriptor, x, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// (x, y) = (y, x).
+        /// </summary>
+        public static void Swap(Vector<float> x, Vector<float> y)
+        {
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+            if (x.Descriptor.Size != y.Descriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            fixed (float* xPtr = x.Storage, yPtr = y.Storage)
+            {
+                swap(x.Descriptor, xPtr, y.Descriptor, yPtr);
+            }
+        }
+
+        /// <summary>
+        /// x.IndexOf(Max(Abs(x))).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static int IAMax(VectorDescriptor descriptor, float* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return iamax(descriptor, x);
+        }
+
+        /// <summary>
+        /// x.IndexOf(Max(Abs(x))).
+        /// </summary>
+        public static int IAMax(Vector<float> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (float* xPtr = x.Storage)
+            {
+                return iamax(x.Descriptor, xPtr);
+            }
+        }
+
+        /// <summary>
+        /// x.IndexOf(Min(Abs(x))).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static int IAMin(VectorDescriptor descriptor, float* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return iamin(descriptor, x);
+        }
+
+        /// <summary>
+        /// x.IndexOf(Min(Abs(x))).
+        /// </summary>
+        public static int IAMin(Vector<float> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (float* xPtr = x.Storage)
+            {
+                return iamin(x.Descriptor, xPtr);
             }
         }
     }
@@ -624,6 +993,119 @@ namespace MathKernel
                 copy(x.Descriptor, xPtr, y.Descriptor, yPtr);
             }
         }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Scale(complexf a, VectorDescriptor descriptor, complexf* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            scal(a, descriptor, x);
+        }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        public static void Scale(complexf a, Vector<complexf> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (complexf* xPtr = x.Storage)
+            {
+                scal(a, x.Descriptor, xPtr);
+            }
+        }
+
+        /// <summary>
+        /// (x, y) = (y, x).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Swap(
+            VectorDescriptor xDescriptor, complexf* x,
+            VectorDescriptor yDescriptor, complexf* y)
+        {
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+            if (xDescriptor.Size != yDescriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            swap(xDescriptor, x, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// (x, y) = (y, x).
+        /// </summary>
+        public static void Swap(Vector<complexf> x, Vector<complexf> y)
+        {
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+            if (x.Descriptor.Size != y.Descriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            fixed (complexf* xPtr = x.Storage, yPtr = y.Storage)
+            {
+                swap(x.Descriptor, xPtr, y.Descriptor, yPtr);
+            }
+        }
+
+        /// <summary>
+        /// x.IndexOf(Max(Abs(x))).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static int IAMax(VectorDescriptor descriptor, complexf* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return iamax(descriptor, x);
+        }
+
+        /// <summary>
+        /// x.IndexOf(Max(Abs(x))).
+        /// </summary>
+        public static int IAMax(Vector<complexf> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (complexf* xPtr = x.Storage)
+            {
+                return iamax(x.Descriptor, xPtr);
+            }
+        }
+
+        /// <summary>
+        /// x.IndexOf(Min(Abs(x))).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static int IAMin(VectorDescriptor descriptor, complexf* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return iamin(descriptor, x);
+        }
+
+        /// <summary>
+        /// x.IndexOf(Min(Abs(x))).
+        /// </summary>
+        public static int IAMin(Vector<complexf> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (complexf* xPtr = x.Storage)
+            {
+                return iamin(x.Descriptor, xPtr);
+            }
+        }
     }
 
     [Duplicate(typeof(double))]
@@ -728,6 +1210,119 @@ namespace MathKernel
             fixed (double* xPtr = x.Storage, yPtr = y.Storage)
             {
                 copy(x.Descriptor, xPtr, y.Descriptor, yPtr);
+            }
+        }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Scale(double a, VectorDescriptor descriptor, double* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            scal(a, descriptor, x);
+        }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        public static void Scale(double a, Vector<double> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (double* xPtr = x.Storage)
+            {
+                scal(a, x.Descriptor, xPtr);
+            }
+        }
+
+        /// <summary>
+        /// (x, y) = (y, x).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Swap(
+            VectorDescriptor xDescriptor, double* x,
+            VectorDescriptor yDescriptor, double* y)
+        {
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+            if (xDescriptor.Size != yDescriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            swap(xDescriptor, x, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// (x, y) = (y, x).
+        /// </summary>
+        public static void Swap(Vector<double> x, Vector<double> y)
+        {
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+            if (x.Descriptor.Size != y.Descriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            fixed (double* xPtr = x.Storage, yPtr = y.Storage)
+            {
+                swap(x.Descriptor, xPtr, y.Descriptor, yPtr);
+            }
+        }
+
+        /// <summary>
+        /// x.IndexOf(Max(Abs(x))).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static int IAMax(VectorDescriptor descriptor, double* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return iamax(descriptor, x);
+        }
+
+        /// <summary>
+        /// x.IndexOf(Max(Abs(x))).
+        /// </summary>
+        public static int IAMax(Vector<double> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (double* xPtr = x.Storage)
+            {
+                return iamax(x.Descriptor, xPtr);
+            }
+        }
+
+        /// <summary>
+        /// x.IndexOf(Min(Abs(x))).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static int IAMin(VectorDescriptor descriptor, double* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return iamin(descriptor, x);
+        }
+
+        /// <summary>
+        /// x.IndexOf(Min(Abs(x))).
+        /// </summary>
+        public static int IAMin(Vector<double> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (double* xPtr = x.Storage)
+            {
+                return iamin(x.Descriptor, xPtr);
             }
         }
     }
@@ -836,6 +1431,119 @@ namespace MathKernel
                 copy(x.Descriptor, xPtr, y.Descriptor, yPtr);
             }
         }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Scale(complex a, VectorDescriptor descriptor, complex* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            scal(a, descriptor, x);
+        }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        public static void Scale(complex a, Vector<complex> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (complex* xPtr = x.Storage)
+            {
+                scal(a, x.Descriptor, xPtr);
+            }
+        }
+
+        /// <summary>
+        /// (x, y) = (y, x).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Swap(
+            VectorDescriptor xDescriptor, complex* x,
+            VectorDescriptor yDescriptor, complex* y)
+        {
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+            if (xDescriptor.Size != yDescriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            swap(xDescriptor, x, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// (x, y) = (y, x).
+        /// </summary>
+        public static void Swap(Vector<complex> x, Vector<complex> y)
+        {
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+            if (x.Descriptor.Size != y.Descriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            fixed (complex* xPtr = x.Storage, yPtr = y.Storage)
+            {
+                swap(x.Descriptor, xPtr, y.Descriptor, yPtr);
+            }
+        }
+
+        /// <summary>
+        /// x.IndexOf(Max(Abs(x))).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static int IAMax(VectorDescriptor descriptor, complex* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return iamax(descriptor, x);
+        }
+
+        /// <summary>
+        /// x.IndexOf(Max(Abs(x))).
+        /// </summary>
+        public static int IAMax(Vector<complex> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (complex* xPtr = x.Storage)
+            {
+                return iamax(x.Descriptor, xPtr);
+            }
+        }
+
+        /// <summary>
+        /// x.IndexOf(Min(Abs(x))).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static int IAMin(VectorDescriptor descriptor, complex* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return iamin(descriptor, x);
+        }
+
+        /// <summary>
+        /// x.IndexOf(Min(Abs(x))).
+        /// </summary>
+        public static int IAMin(Vector<complex> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (complex* xPtr = x.Storage)
+            {
+                return iamin(x.Descriptor, xPtr);
+            }
+        }
     }
 
     [RealTypeDuplicate(typeof(float))]
@@ -942,6 +1650,47 @@ namespace MathKernel
                 rot(x.Descriptor, xPtr, y.Descriptor, yPtr, c, s);
             }
         }
+
+        /// <summary>
+        /// (x, y) = ((h11 * x + h12 * y), (h21 * x + h22 * y)).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Rotate(
+            VectorDescriptor xDescriptor, float* x,
+            VectorDescriptor yDescriptor, float* y,
+            float h11, float h12, float h21, float h22)
+        {
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+            if (xDescriptor.Size != yDescriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            rotm(xDescriptor, x, yDescriptor, y, h11, h12, h21, h22);
+        }
+
+        /// <summary>
+        /// (x, y) = ((h11 * x + h12 * y), (h21 * x + h22 * y)).
+        /// </summary>
+        public static void Rotate(
+            Vector<float> x, Vector<float> y,
+            float h11, float h12, float h21, float h22)
+        {
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+            if (x.Descriptor.Size != y.Descriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            fixed (float* xPtr = x.Storage, yPtr = y.Storage)
+            {
+                rotm(x.Descriptor, xPtr, y.Descriptor, yPtr, h11, h12, h21, h22);
+            }
+        }
     }
 
     [RealTypeDuplicate(typeof(double))]
@@ -1046,6 +1795,47 @@ namespace MathKernel
             fixed (double* xPtr = x.Storage, yPtr = y.Storage)
             {
                 rot(x.Descriptor, xPtr, y.Descriptor, yPtr, c, s);
+            }
+        }
+
+        /// <summary>
+        /// (x, y) = ((h11 * x + h12 * y), (h21 * x + h22 * y)).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Rotate(
+            VectorDescriptor xDescriptor, double* x,
+            VectorDescriptor yDescriptor, double* y,
+            double h11, double h12, double h21, double h22)
+        {
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+            if (xDescriptor.Size != yDescriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            rotm(xDescriptor, x, yDescriptor, y, h11, h12, h21, h22);
+        }
+
+        /// <summary>
+        /// (x, y) = ((h11 * x + h12 * y), (h21 * x + h22 * y)).
+        /// </summary>
+        public static void Rotate(
+            Vector<double> x, Vector<double> y,
+            double h11, double h12, double h21, double h22)
+        {
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+            if (x.Descriptor.Size != y.Descriptor.Size)
+            {
+                throw new ArgumentException(Strings.VectorSizesAreNotEqual);
+            }
+
+            fixed (double* xPtr = x.Storage, yPtr = y.Storage)
+            {
+                rotm(x.Descriptor, xPtr, y.Descriptor, yPtr, h11, h12, h21, h22);
             }
         }
     }
@@ -1192,6 +1982,31 @@ namespace MathKernel
                 rot(x.Descriptor, xPtr, y.Descriptor, yPtr, c, s);
             }
         }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Scale(float a, VectorDescriptor descriptor, complexf* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            scal(a, descriptor, x);
+        }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        public static void Scale(float a, Vector<complexf> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (complexf* xPtr = x.Storage)
+            {
+                scal(a, x.Descriptor, xPtr);
+            }
+        }
     }
 
     [ComplexTypeDuplicate(typeof(complex))]
@@ -1334,6 +2149,31 @@ namespace MathKernel
             fixed (complex* xPtr = x.Storage, yPtr = y.Storage)
             {
                 rot(x.Descriptor, xPtr, y.Descriptor, yPtr, c, s);
+            }
+        }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void Scale(double a, VectorDescriptor descriptor, complex* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            scal(a, descriptor, x);
+        }
+
+        /// <summary>
+        /// x = a * x.
+        /// </summary>
+        public static void Scale(double a, Vector<complex> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (complex* xPtr = x.Storage)
+            {
+                scal(a, x.Descriptor, xPtr);
             }
         }
     }

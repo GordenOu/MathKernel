@@ -2,6 +2,11 @@
   "buildOptions": {
     "emitEntryPoint": true
   },
+  "dependencies": {
+    "MathKernel": {
+      "target": "project"
+    }
+  },
   "frameworks": {
     "netcoreapp1.0": {
       "dependencies": {
