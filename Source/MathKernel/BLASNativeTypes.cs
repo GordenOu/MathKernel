@@ -30,4 +30,10 @@
         CblasLeft = 141,
         CblasRight = 142
     }
+
+    internal enum CBLAS_IDENTIFIER
+    {
+        CblasAMatrix = 161,
+        CblasBMatrix = 162
+    }
 }

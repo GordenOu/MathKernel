@@ -2168,5 +2168,85 @@ namespace MathKernel
             double beta,
             void* C,
             int ldc);
+
+        [DllImport(dllName)]
+        public static extern float* cblas_sgemm_alloc(
+            CBLAS_IDENTIFIER identifier,
+            int M,
+            int N,
+            int K);
+
+        [DllImport(dllName)]
+        public static extern void cblas_sgemm_pack(
+            CBLAS_LAYOUT Layout,
+            CBLAS_IDENTIFIER identifier,
+            CBLAS_TRANSPOSE Trans,
+            int M,
+            int N,
+            int K,
+            float alpha,
+            float* src,
+            int ld,
+            float* dest);
+
+        [DllImport(dllName)]
+        public static extern void cblas_sgemm_compute(
+            CBLAS_LAYOUT Layout,
+            int TransA,
+            int TransB,
+            int M,
+            int N,
+            int K,
+            float* A,
+            int lda,
+            float* B,
+            int ldb,
+            float beta,
+            float* C,
+            int ldc);
+
+        [DllImport(dllName)]
+        public static extern void cblas_sgemm_free(
+            float* dest);
+
+        [DllImport(dllName)]
+        public static extern double* cblas_dgemm_alloc(
+            CBLAS_IDENTIFIER identifier,
+            int M,
+            int N,
+            int K);
+
+        [DllImport(dllName)]
+        public static extern void cblas_dgemm_pack(
+            CBLAS_LAYOUT Layout,
+            CBLAS_IDENTIFIER identifier,
+            CBLAS_TRANSPOSE Trans,
+            int M,
+            int N,
+            int K,
+            double alpha,
+            double* src,
+            int ld,
+            double* dest);
+
+        [DllImport(dllName)]
+        public static extern void cblas_dgemm_compute(
+            CBLAS_LAYOUT Layout,
+            int TransA,
+            int TransB,
+            int M,
+            int N,
+            int K,
+            double* A,
+            int lda,
+            double* B,
+            int ldb,
+            double beta,
+            double* C,
+            int ldc);
+
+        [DllImport(dllName)]
+        public static extern void cblas_dgemm_free(
+            double* dest);
     }
 }
