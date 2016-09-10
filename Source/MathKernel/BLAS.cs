@@ -674,31 +674,6 @@ namespace MathKernel
     public static unsafe partial class BLAS
     {
         /// <summary>
-        /// Sum(Abs(x)).
-        /// </summary>
-        [CLSCompliant(false)]
-        public static float ASum(VectorDescriptor descriptor, float* x)
-        {
-            Requires.NotNull(descriptor, nameof(descriptor));
-            Requires.NotNullPtr(x, nameof(x));
-
-            return asum(descriptor, x);
-        }
-
-        /// <summary>
-        /// Sum(Abs(x)).
-        /// </summary>
-        public static float ASum(Vector<float> x)
-        {
-            Requires.NotNull(x, nameof(x));
-
-            fixed (float* xPtr = x.Storage)
-            {
-                return asum(x.Descriptor, xPtr);
-            }
-        }
-
-        /// <summary>
         /// y = a * x + y.
         /// </summary>
         [CLSCompliant(false)]
@@ -733,7 +708,7 @@ namespace MathKernel
 
             fixed (float* xPtr = x.Storage, yPtr = y.Storage)
             {
-                axpy(a, x.Descriptor, xPtr, y.Descriptor, xPtr);
+                axpy(a, x.Descriptor, xPtr, y.Descriptor, yPtr);
             }
         }
 
@@ -893,31 +868,6 @@ namespace MathKernel
     public static unsafe partial class BLAS
     {
         /// <summary>
-        /// Sum(Abs(x)).
-        /// </summary>
-        [CLSCompliant(false)]
-        public static complexf ASum(VectorDescriptor descriptor, complexf* x)
-        {
-            Requires.NotNull(descriptor, nameof(descriptor));
-            Requires.NotNullPtr(x, nameof(x));
-
-            return asum(descriptor, x);
-        }
-
-        /// <summary>
-        /// Sum(Abs(x)).
-        /// </summary>
-        public static complexf ASum(Vector<complexf> x)
-        {
-            Requires.NotNull(x, nameof(x));
-
-            fixed (complexf* xPtr = x.Storage)
-            {
-                return asum(x.Descriptor, xPtr);
-            }
-        }
-
-        /// <summary>
         /// y = a * x + y.
         /// </summary>
         [CLSCompliant(false)]
@@ -952,7 +902,7 @@ namespace MathKernel
 
             fixed (complexf* xPtr = x.Storage, yPtr = y.Storage)
             {
-                axpy(a, x.Descriptor, xPtr, y.Descriptor, xPtr);
+                axpy(a, x.Descriptor, xPtr, y.Descriptor, yPtr);
             }
         }
 
@@ -1112,31 +1062,6 @@ namespace MathKernel
     public static unsafe partial class BLAS
     {
         /// <summary>
-        /// Sum(Abs(x)).
-        /// </summary>
-        [CLSCompliant(false)]
-        public static double ASum(VectorDescriptor descriptor, double* x)
-        {
-            Requires.NotNull(descriptor, nameof(descriptor));
-            Requires.NotNullPtr(x, nameof(x));
-
-            return asum(descriptor, x);
-        }
-
-        /// <summary>
-        /// Sum(Abs(x)).
-        /// </summary>
-        public static double ASum(Vector<double> x)
-        {
-            Requires.NotNull(x, nameof(x));
-
-            fixed (double* xPtr = x.Storage)
-            {
-                return asum(x.Descriptor, xPtr);
-            }
-        }
-
-        /// <summary>
         /// y = a * x + y.
         /// </summary>
         [CLSCompliant(false)]
@@ -1171,7 +1096,7 @@ namespace MathKernel
 
             fixed (double* xPtr = x.Storage, yPtr = y.Storage)
             {
-                axpy(a, x.Descriptor, xPtr, y.Descriptor, xPtr);
+                axpy(a, x.Descriptor, xPtr, y.Descriptor, yPtr);
             }
         }
 
@@ -1331,31 +1256,6 @@ namespace MathKernel
     public static unsafe partial class BLAS
     {
         /// <summary>
-        /// Sum(Abs(x)).
-        /// </summary>
-        [CLSCompliant(false)]
-        public static complex ASum(VectorDescriptor descriptor, complex* x)
-        {
-            Requires.NotNull(descriptor, nameof(descriptor));
-            Requires.NotNullPtr(x, nameof(x));
-
-            return asum(descriptor, x);
-        }
-
-        /// <summary>
-        /// Sum(Abs(x)).
-        /// </summary>
-        public static complex ASum(Vector<complex> x)
-        {
-            Requires.NotNull(x, nameof(x));
-
-            fixed (complex* xPtr = x.Storage)
-            {
-                return asum(x.Descriptor, xPtr);
-            }
-        }
-
-        /// <summary>
         /// y = a * x + y.
         /// </summary>
         [CLSCompliant(false)]
@@ -1390,7 +1290,7 @@ namespace MathKernel
 
             fixed (complex* xPtr = x.Storage, yPtr = y.Storage)
             {
-                axpy(a, x.Descriptor, xPtr, y.Descriptor, xPtr);
+                axpy(a, x.Descriptor, xPtr, y.Descriptor, yPtr);
             }
         }
 
@@ -1550,6 +1450,31 @@ namespace MathKernel
     public static unsafe partial class BLAS
     {
         /// <summary>
+        /// Sum(Abs(x)).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static float ASum(VectorDescriptor descriptor, float* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return asum(descriptor, x);
+        }
+
+        /// <summary>
+        /// Sum(Abs(x)).
+        /// </summary>
+        public static float ASum(Vector<float> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (float* xPtr = x.Storage)
+            {
+                return asum(x.Descriptor, xPtr);
+            }
+        }
+
+        /// <summary>
         /// Sum(i => x[i] * y[i]).
         /// </summary>
         [CLSCompliant(false)]
@@ -1697,6 +1622,31 @@ namespace MathKernel
     public static unsafe partial class BLAS
     {
         /// <summary>
+        /// Sum(Abs(x)).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static double ASum(VectorDescriptor descriptor, double* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return asum(descriptor, x);
+        }
+
+        /// <summary>
+        /// Sum(Abs(x)).
+        /// </summary>
+        public static double ASum(Vector<double> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (double* xPtr = x.Storage)
+            {
+                return asum(x.Descriptor, xPtr);
+            }
+        }
+
+        /// <summary>
         /// Sum(i => x[i] * y[i]).
         /// </summary>
         [CLSCompliant(false)]
@@ -1843,6 +1793,31 @@ namespace MathKernel
     [ComplexTypeDuplicate(typeof(complexf))]
     public static unsafe partial class BLAS
     {
+        /// <summary>
+        /// Sum(Abs(x)).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static float ASum(VectorDescriptor descriptor, complexf* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return asum(descriptor, x);
+        }
+
+        /// <summary>
+        /// Sum(Abs(x)).
+        /// </summary>
+        public static float ASum(Vector<complexf> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (complexf* xPtr = x.Storage)
+            {
+                return asum(x.Descriptor, xPtr);
+            }
+        }
+
         /// <summary>
         /// Sum(i => Conjugate(x[i]) * y[i]).
         /// </summary>
@@ -2012,6 +1987,31 @@ namespace MathKernel
     [ComplexTypeDuplicate(typeof(complex))]
     public static unsafe partial class BLAS
     {
+        /// <summary>
+        /// Sum(Abs(x)).
+        /// </summary>
+        [CLSCompliant(false)]
+        public static double ASum(VectorDescriptor descriptor, complex* x)
+        {
+            Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNullPtr(x, nameof(x));
+
+            return asum(descriptor, x);
+        }
+
+        /// <summary>
+        /// Sum(Abs(x)).
+        /// </summary>
+        public static double ASum(Vector<complex> x)
+        {
+            Requires.NotNull(x, nameof(x));
+
+            fixed (complex* xPtr = x.Storage)
+            {
+                return asum(x.Descriptor, xPtr);
+            }
+        }
+
         /// <summary>
         /// Sum(i => Conjugate(x[i]) * y[i]).
         /// </summary>

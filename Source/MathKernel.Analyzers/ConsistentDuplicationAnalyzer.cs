@@ -84,7 +84,6 @@ namespace MathKernel.Analyzers
             var attributes =
                 (from attribute in namedTypeSymbol.GetAttributes()
                  where attribute.AttributeClass.Name == attributeName + "Attribute"
-                 where attribute.AttributeClass.ContainingNamespace.Name == "MathKernel"
                  select attribute).ToArray();
             if (attributes.Length == 0)
             {
