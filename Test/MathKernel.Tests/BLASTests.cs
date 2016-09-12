@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace MathKernel.Tests
 {
     [TestClass]
-    public unsafe partial class BLASTests : IDisposable
+    public unsafe partial class BLASTests : MathKernelTests, IDisposable
     {
         private const double delta = 1e-6;
 
