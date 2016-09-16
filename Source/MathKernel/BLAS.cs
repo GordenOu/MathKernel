@@ -424,8 +424,8 @@ namespace MathKernel
         {
             var h = stackalloc float[5];
             h[1] = h11;
-            h[2] = h12;
-            h[3] = h21;
+            h[2] = h21;
+            h[3] = h12;
             h[4] = h22;
             if (h11 == 1 && h22 == 1)
             {
@@ -461,8 +461,8 @@ namespace MathKernel
         {
             var h = stackalloc double[5];
             h[1] = h11;
-            h[2] = h12;
-            h[3] = h21;
+            h[2] = h21;
+            h[3] = h12;
             h[4] = h22;
             if (h11 == 1 && h22 == 1)
             {

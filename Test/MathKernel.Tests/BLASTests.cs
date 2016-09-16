@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static System.Math;
 
 namespace MathKernel.Tests
 {
@@ -105,6 +106,82 @@ namespace MathKernel.Tests
             BLAS.Copy(x.Descriptor, xPtr, y.Descriptor, yPtr);
             Assert.AreEqual(1.1, yPtr[1].AsDouble(), delta);
             Assert.AreEqual(1.2, yPtr[4].AsDouble(), delta);
+
+            // Norm2
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            var norm = BLAS.Norm2(x);
+            Assert.AreEqual(Sqrt(1.1 * 1.1 + 1.2 * 1.2), norm, delta);
+            norm = BLAS.Norm2(x.Descriptor, xPtr);
+            Assert.AreEqual(Sqrt(1.1 * 1.1 + 1.2 * 1.2), norm, delta);
+            norm = BLAS.Norm2(y);
+            Assert.AreEqual(Sqrt(1.3 * 1.3 + 1.4 * 1.4), norm, delta);
+            norm = BLAS.Norm2(y.Descriptor, yPtr);
+            Assert.AreEqual(Sqrt(1.3 * 1.3 + 1.4 * 1.4), norm, delta);
+
+            // Rotate
+            var c = 1.5f;
+            var s = 1.6f;
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            BLAS.Rotate(x, y, c, s);
+            Assert.AreEqual(x.Storage[0].AsDouble(), 3.73f, delta);
+            Assert.AreEqual(x.Storage[1].AsDouble(), 4.04f, delta);
+            Assert.AreEqual(y.Storage[1].AsDouble(), 0.19f, delta);
+            Assert.AreEqual(y.Storage[4].AsDouble(), 0.18f, delta);
+            BLAS.Rotate(x.Descriptor, xPtr, y.Descriptor, yPtr, c, s);
+            Assert.AreEqual(xPtr[0].AsDouble(), 3.73f, delta);
+            Assert.AreEqual(xPtr[1].AsDouble(), 4.04f, delta);
+            Assert.AreEqual(yPtr[1].AsDouble(), 0.19f, delta);
+            Assert.AreEqual(yPtr[4].AsDouble(), 0.18f, delta);
+
+            // Scale
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            float alpha = 1.5f;
+            BLAS.Scale(alpha, x);
+            Assert.AreEqual(1.1f * alpha.AsDouble(), x.Storage[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha.AsDouble(), x.Storage[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y);
+            Assert.AreEqual(1.3f * alpha.AsDouble(), y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha.AsDouble(), y.Storage[4].AsDouble(), delta);
+            BLAS.Scale(alpha, x.Descriptor, xPtr);
+            Assert.AreEqual(1.1f * alpha.AsDouble(), xPtr[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha.AsDouble(), xPtr[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y.Descriptor, yPtr);
+            Assert.AreEqual(1.3f * alpha.AsDouble(), yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha.AsDouble(), yPtr[4].AsDouble(), delta);
+
+            // Swap
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            BLAS.Swap(x, y);
+            Assert.AreEqual(1.3f, x.Storage[0].AsDouble(), delta);
+            Assert.AreEqual(1.4f, x.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.1f, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.2f, y.Storage[4].AsDouble(), delta);
+            BLAS.Swap(x.Descriptor, xPtr, y.Descriptor, yPtr);
+            Assert.AreEqual(1.3f, xPtr[0].AsDouble(), delta);
+            Assert.AreEqual(1.4f, xPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.1f, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.2f, yPtr[4].AsDouble(), delta);
+
+            // IAMax and IAMin
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            int iAMax;
+            int iAMin;
+            iAMax = BLAS.IAMax(x);
+            iAMin = BLAS.IAMin(x);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(y);
+            iAMin = BLAS.IAMin(y);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(x.Descriptor, xPtr);
+            iAMin = BLAS.IAMin(x.Descriptor, xPtr);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(y.Descriptor, yPtr);
+            iAMin = BLAS.IAMin(y.Descriptor, yPtr);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
         }
     }
 
@@ -164,6 +241,82 @@ namespace MathKernel.Tests
             BLAS.Copy(x.Descriptor, xPtr, y.Descriptor, yPtr);
             Assert.AreEqual(1.1, yPtr[1].AsDouble(), delta);
             Assert.AreEqual(1.2, yPtr[4].AsDouble(), delta);
+
+            // Norm2
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            var norm = BLAS.Norm2(x);
+            Assert.AreEqual(Sqrt(1.1 * 1.1 + 1.2 * 1.2), norm, delta);
+            norm = BLAS.Norm2(x.Descriptor, xPtr);
+            Assert.AreEqual(Sqrt(1.1 * 1.1 + 1.2 * 1.2), norm, delta);
+            norm = BLAS.Norm2(y);
+            Assert.AreEqual(Sqrt(1.3 * 1.3 + 1.4 * 1.4), norm, delta);
+            norm = BLAS.Norm2(y.Descriptor, yPtr);
+            Assert.AreEqual(Sqrt(1.3 * 1.3 + 1.4 * 1.4), norm, delta);
+
+            // Rotate
+            var c = 1.5f;
+            var s = 1.6f;
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            BLAS.Rotate(x, y, c, s);
+            Assert.AreEqual(x.Storage[0].AsDouble(), 3.73f, delta);
+            Assert.AreEqual(x.Storage[1].AsDouble(), 4.04f, delta);
+            Assert.AreEqual(y.Storage[1].AsDouble(), 0.19f, delta);
+            Assert.AreEqual(y.Storage[4].AsDouble(), 0.18f, delta);
+            BLAS.Rotate(x.Descriptor, xPtr, y.Descriptor, yPtr, c, s);
+            Assert.AreEqual(xPtr[0].AsDouble(), 3.73f, delta);
+            Assert.AreEqual(xPtr[1].AsDouble(), 4.04f, delta);
+            Assert.AreEqual(yPtr[1].AsDouble(), 0.19f, delta);
+            Assert.AreEqual(yPtr[4].AsDouble(), 0.18f, delta);
+
+            // Scale
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            double alpha = 1.5f;
+            BLAS.Scale(alpha, x);
+            Assert.AreEqual(1.1f * alpha.AsDouble(), x.Storage[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha.AsDouble(), x.Storage[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y);
+            Assert.AreEqual(1.3f * alpha.AsDouble(), y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha.AsDouble(), y.Storage[4].AsDouble(), delta);
+            BLAS.Scale(alpha, x.Descriptor, xPtr);
+            Assert.AreEqual(1.1f * alpha.AsDouble(), xPtr[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha.AsDouble(), xPtr[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y.Descriptor, yPtr);
+            Assert.AreEqual(1.3f * alpha.AsDouble(), yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha.AsDouble(), yPtr[4].AsDouble(), delta);
+
+            // Swap
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            BLAS.Swap(x, y);
+            Assert.AreEqual(1.3f, x.Storage[0].AsDouble(), delta);
+            Assert.AreEqual(1.4f, x.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.1f, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.2f, y.Storage[4].AsDouble(), delta);
+            BLAS.Swap(x.Descriptor, xPtr, y.Descriptor, yPtr);
+            Assert.AreEqual(1.3f, xPtr[0].AsDouble(), delta);
+            Assert.AreEqual(1.4f, xPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.1f, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.2f, yPtr[4].AsDouble(), delta);
+
+            // IAMax and IAMin
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            int iAMax;
+            int iAMin;
+            iAMax = BLAS.IAMax(x);
+            iAMin = BLAS.IAMin(x);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(y);
+            iAMin = BLAS.IAMin(y);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(x.Descriptor, xPtr);
+            iAMin = BLAS.IAMin(x.Descriptor, xPtr);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(y.Descriptor, yPtr);
+            iAMin = BLAS.IAMin(y.Descriptor, yPtr);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
         }
     }
 
@@ -223,6 +376,82 @@ namespace MathKernel.Tests
             BLAS.Copy(x.Descriptor, xPtr, y.Descriptor, yPtr);
             Assert.AreEqual(1.1, yPtr[1].AsDouble(), delta);
             Assert.AreEqual(1.2, yPtr[4].AsDouble(), delta);
+
+            // Norm2
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            var norm = BLAS.Norm2(x);
+            Assert.AreEqual(Sqrt(1.1 * 1.1 + 1.2 * 1.2), norm, delta);
+            norm = BLAS.Norm2(x.Descriptor, xPtr);
+            Assert.AreEqual(Sqrt(1.1 * 1.1 + 1.2 * 1.2), norm, delta);
+            norm = BLAS.Norm2(y);
+            Assert.AreEqual(Sqrt(1.3 * 1.3 + 1.4 * 1.4), norm, delta);
+            norm = BLAS.Norm2(y.Descriptor, yPtr);
+            Assert.AreEqual(Sqrt(1.3 * 1.3 + 1.4 * 1.4), norm, delta);
+
+            // Rotate
+            var c = 1.5f;
+            var s = 1.6f;
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            BLAS.Rotate(x, y, c, s);
+            Assert.AreEqual(x.Storage[0].AsDouble(), 3.73f, delta);
+            Assert.AreEqual(x.Storage[1].AsDouble(), 4.04f, delta);
+            Assert.AreEqual(y.Storage[1].AsDouble(), 0.19f, delta);
+            Assert.AreEqual(y.Storage[4].AsDouble(), 0.18f, delta);
+            BLAS.Rotate(x.Descriptor, xPtr, y.Descriptor, yPtr, c, s);
+            Assert.AreEqual(xPtr[0].AsDouble(), 3.73f, delta);
+            Assert.AreEqual(xPtr[1].AsDouble(), 4.04f, delta);
+            Assert.AreEqual(yPtr[1].AsDouble(), 0.19f, delta);
+            Assert.AreEqual(yPtr[4].AsDouble(), 0.18f, delta);
+
+            // Scale
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            complexf alpha = 1.5f;
+            BLAS.Scale(alpha, x);
+            Assert.AreEqual(1.1f * alpha.AsDouble(), x.Storage[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha.AsDouble(), x.Storage[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y);
+            Assert.AreEqual(1.3f * alpha.AsDouble(), y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha.AsDouble(), y.Storage[4].AsDouble(), delta);
+            BLAS.Scale(alpha, x.Descriptor, xPtr);
+            Assert.AreEqual(1.1f * alpha.AsDouble(), xPtr[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha.AsDouble(), xPtr[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y.Descriptor, yPtr);
+            Assert.AreEqual(1.3f * alpha.AsDouble(), yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha.AsDouble(), yPtr[4].AsDouble(), delta);
+
+            // Swap
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            BLAS.Swap(x, y);
+            Assert.AreEqual(1.3f, x.Storage[0].AsDouble(), delta);
+            Assert.AreEqual(1.4f, x.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.1f, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.2f, y.Storage[4].AsDouble(), delta);
+            BLAS.Swap(x.Descriptor, xPtr, y.Descriptor, yPtr);
+            Assert.AreEqual(1.3f, xPtr[0].AsDouble(), delta);
+            Assert.AreEqual(1.4f, xPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.1f, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.2f, yPtr[4].AsDouble(), delta);
+
+            // IAMax and IAMin
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            int iAMax;
+            int iAMin;
+            iAMax = BLAS.IAMax(x);
+            iAMin = BLAS.IAMin(x);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(y);
+            iAMin = BLAS.IAMin(y);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(x.Descriptor, xPtr);
+            iAMin = BLAS.IAMin(x.Descriptor, xPtr);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(y.Descriptor, yPtr);
+            iAMin = BLAS.IAMin(y.Descriptor, yPtr);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
         }
     }
 
@@ -282,6 +511,82 @@ namespace MathKernel.Tests
             BLAS.Copy(x.Descriptor, xPtr, y.Descriptor, yPtr);
             Assert.AreEqual(1.1, yPtr[1].AsDouble(), delta);
             Assert.AreEqual(1.2, yPtr[4].AsDouble(), delta);
+
+            // Norm2
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            var norm = BLAS.Norm2(x);
+            Assert.AreEqual(Sqrt(1.1 * 1.1 + 1.2 * 1.2), norm, delta);
+            norm = BLAS.Norm2(x.Descriptor, xPtr);
+            Assert.AreEqual(Sqrt(1.1 * 1.1 + 1.2 * 1.2), norm, delta);
+            norm = BLAS.Norm2(y);
+            Assert.AreEqual(Sqrt(1.3 * 1.3 + 1.4 * 1.4), norm, delta);
+            norm = BLAS.Norm2(y.Descriptor, yPtr);
+            Assert.AreEqual(Sqrt(1.3 * 1.3 + 1.4 * 1.4), norm, delta);
+
+            // Rotate
+            var c = 1.5f;
+            var s = 1.6f;
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            BLAS.Rotate(x, y, c, s);
+            Assert.AreEqual(x.Storage[0].AsDouble(), 3.73f, delta);
+            Assert.AreEqual(x.Storage[1].AsDouble(), 4.04f, delta);
+            Assert.AreEqual(y.Storage[1].AsDouble(), 0.19f, delta);
+            Assert.AreEqual(y.Storage[4].AsDouble(), 0.18f, delta);
+            BLAS.Rotate(x.Descriptor, xPtr, y.Descriptor, yPtr, c, s);
+            Assert.AreEqual(xPtr[0].AsDouble(), 3.73f, delta);
+            Assert.AreEqual(xPtr[1].AsDouble(), 4.04f, delta);
+            Assert.AreEqual(yPtr[1].AsDouble(), 0.19f, delta);
+            Assert.AreEqual(yPtr[4].AsDouble(), 0.18f, delta);
+
+            // Scale
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            complex alpha = 1.5f;
+            BLAS.Scale(alpha, x);
+            Assert.AreEqual(1.1f * alpha.AsDouble(), x.Storage[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha.AsDouble(), x.Storage[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y);
+            Assert.AreEqual(1.3f * alpha.AsDouble(), y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha.AsDouble(), y.Storage[4].AsDouble(), delta);
+            BLAS.Scale(alpha, x.Descriptor, xPtr);
+            Assert.AreEqual(1.1f * alpha.AsDouble(), xPtr[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha.AsDouble(), xPtr[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y.Descriptor, yPtr);
+            Assert.AreEqual(1.3f * alpha.AsDouble(), yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha.AsDouble(), yPtr[4].AsDouble(), delta);
+
+            // Swap
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            BLAS.Swap(x, y);
+            Assert.AreEqual(1.3f, x.Storage[0].AsDouble(), delta);
+            Assert.AreEqual(1.4f, x.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.1f, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.2f, y.Storage[4].AsDouble(), delta);
+            BLAS.Swap(x.Descriptor, xPtr, y.Descriptor, yPtr);
+            Assert.AreEqual(1.3f, xPtr[0].AsDouble(), delta);
+            Assert.AreEqual(1.4f, xPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.1f, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.2f, yPtr[4].AsDouble(), delta);
+
+            // IAMax and IAMin
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            int iAMax;
+            int iAMin;
+            iAMax = BLAS.IAMax(x);
+            iAMin = BLAS.IAMin(x);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(y);
+            iAMin = BLAS.IAMin(y);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(x.Descriptor, xPtr);
+            iAMin = BLAS.IAMin(x.Descriptor, xPtr);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
+            iAMax = BLAS.IAMax(y.Descriptor, yPtr);
+            iAMin = BLAS.IAMin(y.Descriptor, yPtr);
+            Assert.AreEqual(1, iAMax);
+            Assert.AreEqual(0, iAMin);
         }
     }
 
@@ -303,6 +608,32 @@ namespace MathKernel.Tests
             Assert.AreEqual(3.11, dot, delta);
             dot = BLAS.Dot(x.Descriptor, xPtr, y.Descriptor, yPtr);
             Assert.AreEqual(3.11, dot, delta);
+
+            // Rotate
+            foreach (var h in new[]
+            {
+                new[] { 1.5f, 1.6f, 1.7f, 1.8f },
+                new[] { 1f, 0f, 0f, 1f },
+                new[] { 1f, 1.5f, 1.6f, 1f },
+                new[] { 1.5f, 1f, -1f, 1.6f }
+            })
+            {
+                var h11 = h[0];
+                var h12 = h[1];
+                var h21 = h[2];
+                var h22 = h[3];
+                GetVectors(out x, out y, out xPtr, out yPtr);
+                BLAS.Rotate(x, y, h11, h12, h21, h22);
+                Assert.AreEqual(1.1f * h11 + 1.3f * h12, x.Storage[0], delta);
+                Assert.AreEqual(1.2f * h11 + 1.4f * h12, x.Storage[1], delta);
+                Assert.AreEqual(1.1f * h21 + 1.3f * h22, y.Storage[1], delta);
+                Assert.AreEqual(1.2f * h21 + 1.4f * h22, y.Storage[4], delta);
+                BLAS.Rotate(x.Descriptor, xPtr, y.Descriptor, yPtr, h11, h12, h21, h22);
+                Assert.AreEqual(1.1f * h11 + 1.3f * h12, xPtr[0], delta);
+                Assert.AreEqual(1.2f * h11 + 1.4f * h12, xPtr[1], delta);
+                Assert.AreEqual(1.1f * h21 + 1.3f * h22, yPtr[1], delta);
+                Assert.AreEqual(1.2f * h21 + 1.4f * h22, yPtr[4], delta);
+            }
         }
     }
 
@@ -324,6 +655,32 @@ namespace MathKernel.Tests
             Assert.AreEqual(3.11, dot, delta);
             dot = BLAS.Dot(x.Descriptor, xPtr, y.Descriptor, yPtr);
             Assert.AreEqual(3.11, dot, delta);
+
+            // Rotate
+            foreach (var h in new[]
+            {
+                new[] { 1.5f, 1.6f, 1.7f, 1.8f },
+                new[] { 1f, 0f, 0f, 1f },
+                new[] { 1f, 1.5f, 1.6f, 1f },
+                new[] { 1.5f, 1f, -1f, 1.6f }
+            })
+            {
+                var h11 = h[0];
+                var h12 = h[1];
+                var h21 = h[2];
+                var h22 = h[3];
+                GetVectors(out x, out y, out xPtr, out yPtr);
+                BLAS.Rotate(x, y, h11, h12, h21, h22);
+                Assert.AreEqual(1.1f * h11 + 1.3f * h12, x.Storage[0], delta);
+                Assert.AreEqual(1.2f * h11 + 1.4f * h12, x.Storage[1], delta);
+                Assert.AreEqual(1.1f * h21 + 1.3f * h22, y.Storage[1], delta);
+                Assert.AreEqual(1.2f * h21 + 1.4f * h22, y.Storage[4], delta);
+                BLAS.Rotate(x.Descriptor, xPtr, y.Descriptor, yPtr, h11, h12, h21, h22);
+                Assert.AreEqual(1.1f * h11 + 1.3f * h12, xPtr[0], delta);
+                Assert.AreEqual(1.2f * h11 + 1.4f * h12, xPtr[1], delta);
+                Assert.AreEqual(1.1f * h21 + 1.3f * h22, yPtr[1], delta);
+                Assert.AreEqual(1.2f * h21 + 1.4f * h22, yPtr[4], delta);
+            }
         }
     }
 
@@ -376,6 +733,22 @@ namespace MathKernel.Tests
             Assert.AreEqual(expected, dotu);
             dotu = BLAS.DotC(x.Descriptor, xPtr, y.Descriptor, yPtr);
             Assert.AreEqual(expected, dotu);
+
+            // Scale
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            float alpha = 1.5f;
+            BLAS.Scale(alpha, x);
+            Assert.AreEqual(1.1f * alpha, x.Storage[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha, x.Storage[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y);
+            Assert.AreEqual(1.3f * alpha, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha, y.Storage[4].AsDouble(), delta);
+            BLAS.Scale(alpha, x.Descriptor, xPtr);
+            Assert.AreEqual(1.1f * alpha, xPtr[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha, xPtr[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y.Descriptor, yPtr);
+            Assert.AreEqual(1.3f * alpha, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha, yPtr[4].AsDouble(), delta);
         }
     }
 
@@ -428,6 +801,22 @@ namespace MathKernel.Tests
             Assert.AreEqual(expected, dotu);
             dotu = BLAS.DotC(x.Descriptor, xPtr, y.Descriptor, yPtr);
             Assert.AreEqual(expected, dotu);
+
+            // Scale
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            double alpha = 1.5f;
+            BLAS.Scale(alpha, x);
+            Assert.AreEqual(1.1f * alpha, x.Storage[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha, x.Storage[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y);
+            Assert.AreEqual(1.3f * alpha, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha, y.Storage[4].AsDouble(), delta);
+            BLAS.Scale(alpha, x.Descriptor, xPtr);
+            Assert.AreEqual(1.1f * alpha, xPtr[0].AsDouble(), delta);
+            Assert.AreEqual(1.2f * alpha, xPtr[1].AsDouble(), delta);
+            BLAS.Scale(alpha, y.Descriptor, yPtr);
+            Assert.AreEqual(1.3f * alpha, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(1.4f * alpha, yPtr[4].AsDouble(), delta);
         }
     }
 }
