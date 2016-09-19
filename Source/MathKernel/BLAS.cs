@@ -668,11 +668,137 @@ namespace MathKernel
         #endregion
 
         #endregion
+
+        #region Level 2
+
+        #region gbmv
+
+        private static void gbmv(
+            float alpha,
+            BandMatrixDescriptor ADescriptor, float* A,
+            VectorDescriptor xDescriptor, float* x,
+            float beta,
+            VectorDescriptor yDescriptor, float* y)
+        {
+            CBLAS_TRANSPOSE trans;
+            if (ADescriptor.IsConjugated)
+            {
+                trans = CBLAS_TRANSPOSE.CblasConjTrans;
+                ADescriptor = ADescriptor.Transpose();
+            }
+            else
+            {
+                trans = CBLAS_TRANSPOSE.CblasNoTrans;
+            }
+            BLASNativeMethods.cblas_sgbmv(
+                (CBLAS_LAYOUT)ADescriptor.Layout,
+                trans,
+                ADescriptor.Rows, ADescriptor.Columns,
+                ADescriptor.LowerBandwidth, ADescriptor.UpperBandwidth,
+                alpha,
+                A + ADescriptor.Offset, ADescriptor.Stride,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                beta,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        private static void gbmv(
+           double alpha,
+           BandMatrixDescriptor ADescriptor, double* A,
+           VectorDescriptor xDescriptor, double* x,
+           double beta,
+           VectorDescriptor yDescriptor, double* y)
+        {
+            CBLAS_TRANSPOSE trans;
+            if (ADescriptor.IsConjugated)
+            {
+                trans = CBLAS_TRANSPOSE.CblasConjTrans;
+                ADescriptor = ADescriptor.Transpose();
+            }
+            else
+            {
+                trans = CBLAS_TRANSPOSE.CblasNoTrans;
+            }
+            BLASNativeMethods.cblas_dgbmv(
+                (CBLAS_LAYOUT)ADescriptor.Layout,
+                trans,
+                ADescriptor.Rows, ADescriptor.Columns,
+                ADescriptor.LowerBandwidth, ADescriptor.UpperBandwidth,
+                alpha,
+                A + ADescriptor.Offset, ADescriptor.Stride,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                beta,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        private static void gbmv(
+           complexf alpha,
+           BandMatrixDescriptor ADescriptor, complexf* A,
+           VectorDescriptor xDescriptor, complexf* x,
+           complexf beta,
+           VectorDescriptor yDescriptor, complexf* y)
+        {
+            CBLAS_TRANSPOSE trans;
+            if (ADescriptor.IsConjugated)
+            {
+                trans = CBLAS_TRANSPOSE.CblasConjTrans;
+                ADescriptor = ADescriptor.Transpose();
+            }
+            else
+            {
+                trans = CBLAS_TRANSPOSE.CblasNoTrans;
+            }
+            BLASNativeMethods.cblas_cgbmv(
+                (CBLAS_LAYOUT)ADescriptor.Layout,
+                trans,
+                ADescriptor.Rows, ADescriptor.Columns,
+                ADescriptor.LowerBandwidth, ADescriptor.UpperBandwidth,
+                &alpha,
+                A + ADescriptor.Offset, ADescriptor.Stride,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                &beta,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        private static void gbmv(
+           complex alpha,
+           BandMatrixDescriptor ADescriptor, complex* A,
+           VectorDescriptor xDescriptor, complex* x,
+           complex beta,
+           VectorDescriptor yDescriptor, complex* y)
+        {
+            CBLAS_TRANSPOSE trans;
+            if (ADescriptor.IsConjugated)
+            {
+                trans = CBLAS_TRANSPOSE.CblasConjTrans;
+                ADescriptor = ADescriptor.Transpose();
+            }
+            else
+            {
+                trans = CBLAS_TRANSPOSE.CblasNoTrans;
+            }
+            BLASNativeMethods.cblas_zgbmv(
+                (CBLAS_LAYOUT)ADescriptor.Layout,
+                trans,
+                ADescriptor.Rows, ADescriptor.Columns,
+                ADescriptor.LowerBandwidth, ADescriptor.UpperBandwidth,
+                &alpha,
+                A + ADescriptor.Offset, ADescriptor.Stride,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                &beta,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        #endregion
+
+        #endregion
     }
 
     [Duplicate(typeof(float))]
     public static unsafe partial class BLAS
     {
+        #region Level 1
+
         /// <summary>
         /// y = a * x + y.
         /// </summary>
@@ -862,11 +988,60 @@ namespace MathKernel
                 return iamin(x.Descriptor, xPtr);
             }
         }
+
+        #endregion
+
+        #region Level 2
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void GBMV(
+            float alpha,
+            BandMatrixDescriptor ADescriptor, float* A,
+            VectorDescriptor xDescriptor, float* x,
+            float beta,
+            VectorDescriptor yDescriptor, float* y)
+        {
+            Requires.NotNull(ADescriptor, nameof(ADescriptor));
+            Requires.NotNullPtr(A, nameof(A));
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+
+            gbmv(alpha, ADescriptor, A, xDescriptor, x, beta, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        public static void GBMV(
+            float alpha,
+            BandMatrix<float> A,
+            Vector<float> x,
+            float beta,
+            Vector<float> y)
+        {
+            Requires.NotNull(A, nameof(A));
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+
+            fixed (float* APtr = A.Storage, xPtr = x.Storage, yPtr = y.Storage)
+            {
+                gbmv(alpha, A.Descriptor, APtr, x.Descriptor, xPtr, beta, y.Descriptor, yPtr);
+            }
+        }
+
+        #endregion
     }
 
     [Duplicate(typeof(complexf))]
     public static unsafe partial class BLAS
     {
+        #region Level 1
+
         /// <summary>
         /// y = a * x + y.
         /// </summary>
@@ -1056,11 +1231,60 @@ namespace MathKernel
                 return iamin(x.Descriptor, xPtr);
             }
         }
+
+        #endregion
+
+        #region Level 2
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void GBMV(
+            complexf alpha,
+            BandMatrixDescriptor ADescriptor, complexf* A,
+            VectorDescriptor xDescriptor, complexf* x,
+            complexf beta,
+            VectorDescriptor yDescriptor, complexf* y)
+        {
+            Requires.NotNull(ADescriptor, nameof(ADescriptor));
+            Requires.NotNullPtr(A, nameof(A));
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+
+            gbmv(alpha, ADescriptor, A, xDescriptor, x, beta, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        public static void GBMV(
+            complexf alpha,
+            BandMatrix<complexf> A,
+            Vector<complexf> x,
+            complexf beta,
+            Vector<complexf> y)
+        {
+            Requires.NotNull(A, nameof(A));
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+
+            fixed (complexf* APtr = A.Storage, xPtr = x.Storage, yPtr = y.Storage)
+            {
+                gbmv(alpha, A.Descriptor, APtr, x.Descriptor, xPtr, beta, y.Descriptor, yPtr);
+            }
+        }
+
+        #endregion
     }
 
     [Duplicate(typeof(double))]
     public static unsafe partial class BLAS
     {
+        #region Level 1
+
         /// <summary>
         /// y = a * x + y.
         /// </summary>
@@ -1250,11 +1474,60 @@ namespace MathKernel
                 return iamin(x.Descriptor, xPtr);
             }
         }
+
+        #endregion
+
+        #region Level 2
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void GBMV(
+            double alpha,
+            BandMatrixDescriptor ADescriptor, double* A,
+            VectorDescriptor xDescriptor, double* x,
+            double beta,
+            VectorDescriptor yDescriptor, double* y)
+        {
+            Requires.NotNull(ADescriptor, nameof(ADescriptor));
+            Requires.NotNullPtr(A, nameof(A));
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+
+            gbmv(alpha, ADescriptor, A, xDescriptor, x, beta, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        public static void GBMV(
+            double alpha,
+            BandMatrix<double> A,
+            Vector<double> x,
+            double beta,
+            Vector<double> y)
+        {
+            Requires.NotNull(A, nameof(A));
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+
+            fixed (double* APtr = A.Storage, xPtr = x.Storage, yPtr = y.Storage)
+            {
+                gbmv(alpha, A.Descriptor, APtr, x.Descriptor, xPtr, beta, y.Descriptor, yPtr);
+            }
+        }
+
+        #endregion
     }
 
     [Duplicate(typeof(complex))]
     public static unsafe partial class BLAS
     {
+        #region Level 1
+
         /// <summary>
         /// y = a * x + y.
         /// </summary>
@@ -1444,6 +1717,53 @@ namespace MathKernel
                 return iamin(x.Descriptor, xPtr);
             }
         }
+
+        #endregion
+
+        #region Level 2
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void GBMV(
+            complex alpha,
+            BandMatrixDescriptor ADescriptor, complex* A,
+            VectorDescriptor xDescriptor, complex* x,
+            complex beta,
+            VectorDescriptor yDescriptor, complex* y)
+        {
+            Requires.NotNull(ADescriptor, nameof(ADescriptor));
+            Requires.NotNullPtr(A, nameof(A));
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+
+            gbmv(alpha, ADescriptor, A, xDescriptor, x, beta, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        public static void GBMV(
+            complex alpha,
+            BandMatrix<complex> A,
+            Vector<complex> x,
+            complex beta,
+            Vector<complex> y)
+        {
+            Requires.NotNull(A, nameof(A));
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+
+            fixed (complex* APtr = A.Storage, xPtr = x.Storage, yPtr = y.Storage)
+            {
+                gbmv(alpha, A.Descriptor, APtr, x.Descriptor, xPtr, beta, y.Descriptor, yPtr);
+            }
+        }
+
+        #endregion
     }
 
     [RealTypeDuplicate(typeof(float))]

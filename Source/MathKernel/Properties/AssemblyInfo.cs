@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Reflection;
+using System.Runtime.CompilerServices;
 
-[assembly: AssemblyVersion("2017")]
 [assembly: CLSCompliant(true)]
+[assembly: InternalsVisibleTo("MathKernel.Tests")]

@@ -62,7 +62,7 @@ namespace MathKernel.Tests
             x = Vector.Create(new float[2]);
             x.Storage[0] = 1.1f;
             x.Storage[1] = 1.2f;
-            y = Vector.Create(new float[10], 2, 1, 3);
+            y = Vector.Create(new float[10], new VectorDescriptor(2, 1, 3));
             y.Storage[1] = 1.3f;
             y.Storage[4] = 1.4f;
             xPtr = (float*)bytes;
@@ -197,7 +197,7 @@ namespace MathKernel.Tests
             x = Vector.Create(new double[2]);
             x.Storage[0] = 1.1f;
             x.Storage[1] = 1.2f;
-            y = Vector.Create(new double[10], 2, 1, 3);
+            y = Vector.Create(new double[10], new VectorDescriptor(2, 1, 3));
             y.Storage[1] = 1.3f;
             y.Storage[4] = 1.4f;
             xPtr = (double*)bytes;
@@ -332,7 +332,7 @@ namespace MathKernel.Tests
             x = Vector.Create(new complexf[2]);
             x.Storage[0] = 1.1f;
             x.Storage[1] = 1.2f;
-            y = Vector.Create(new complexf[10], 2, 1, 3);
+            y = Vector.Create(new complexf[10], new VectorDescriptor(2, 1, 3));
             y.Storage[1] = 1.3f;
             y.Storage[4] = 1.4f;
             xPtr = (complexf*)bytes;
@@ -467,7 +467,7 @@ namespace MathKernel.Tests
             x = Vector.Create(new complex[2]);
             x.Storage[0] = 1.1f;
             x.Storage[1] = 1.2f;
-            y = Vector.Create(new complex[10], 2, 1, 3);
+            y = Vector.Create(new complex[10], new VectorDescriptor(2, 1, 3));
             y.Storage[1] = 1.3f;
             y.Storage[4] = 1.4f;
             xPtr = (complex*)bytes;
@@ -696,7 +696,7 @@ namespace MathKernel.Tests
             x = Vector.Create(new complexf[2]);
             x.Storage[0] = new complexf(1.1f, 1.2f);
             x.Storage[1] = new complexf(1.3f, 1.4f);
-            y = Vector.Create(new complexf[10], 2, 1, 3);
+            y = Vector.Create(new complexf[10], new VectorDescriptor(2, 1, 3));
             y.Storage[1] = new complexf(1.5f, 1.6f);
             y.Storage[4] = new complexf(1.7f, 1.8f);
             xPtr = (complexf*)bytes;
@@ -764,7 +764,7 @@ namespace MathKernel.Tests
             x = Vector.Create(new complex[2]);
             x.Storage[0] = new complex(1.1f, 1.2f);
             x.Storage[1] = new complex(1.3f, 1.4f);
-            y = Vector.Create(new complex[10], 2, 1, 3);
+            y = Vector.Create(new complex[10], new VectorDescriptor(2, 1, 3));
             y.Storage[1] = new complex(1.5f, 1.6f);
             y.Storage[4] = new complex(1.7f, 1.8f);
             xPtr = (complex*)bytes;

@@ -1,9 +1,11 @@
 ﻿{
+  "version": "2017",
   "buildOptions": {
-    "allowUnsafe": true
+    "allowUnsafe": true,
+    "platform": "x64"
   },
   "dependencies": {
-    "Core.Extensions": "0.4.1-alpha1"
+    "Core.Extensions": "0.4.1"
   },
   "frameworks": {
     "netcoreapp1.0": {

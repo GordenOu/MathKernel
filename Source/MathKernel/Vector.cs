@@ -17,7 +17,8 @@ namespace MathKernel
         internal Vector(T[] storage, VectorDescriptor descriptor)
         {
             Requires.NotNull(storage, nameof(storage));
-            if (descriptor.Offset + (descriptor.Size - 1) * descriptor.Stride >= storage.Length)
+            Requires.NotNull(descriptor, nameof(descriptor));
+            if (storage.Length <= descriptor.Offset + (descriptor.Size - 1) * descriptor.Stride)
             {
                 throw new ArgumentException(Strings.InsufficientStorageLength);
             }
@@ -25,10 +26,6 @@ namespace MathKernel
             Storage = storage;
             Descriptor = descriptor;
         }
-
-        internal Vector(T[] storage, int size, int offset, int stride)
-            : this(storage, new VectorDescriptor(size, offset, stride))
-        { }
     }
 
     [Duplicate(typeof(float))]
@@ -39,47 +36,11 @@ namespace MathKernel
             return new Vector<float>(storage, descriptor);
         }
 
-        public static Vector<float> Create(float[] storage, int size, int offset, int stride)
-        {
-            return new Vector<float>(storage, size, offset, stride);
-        }
-
-        public static Vector<float> Create(float[] storage, int size, int offset)
-        {
-            return new Vector<float>(storage, size, offset, 1);
-        }
-
         public static Vector<float> Create(float[] storage)
         {
             Requires.NotNull(storage, nameof(storage));
 
-            return new Vector<float>(storage, storage.Length, 0, 1);
-        }
-    }
-
-    [Duplicate(typeof(complexf))]
-    public static partial class Vector
-    {
-        public static Vector<complexf> Create(complexf[] storage, VectorDescriptor descriptor)
-        {
-            return new Vector<complexf>(storage, descriptor);
-        }
-
-        public static Vector<complexf> Create(complexf[] storage, int size, int offset, int stride)
-        {
-            return new Vector<complexf>(storage, size, offset, stride);
-        }
-
-        public static Vector<complexf> Create(complexf[] storage, int size, int offset)
-        {
-            return new Vector<complexf>(storage, size, offset, 1);
-        }
-
-        public static Vector<complexf> Create(complexf[] storage)
-        {
-            Requires.NotNull(storage, nameof(storage));
-
-            return new Vector<complexf>(storage, storage.Length, 0, 1);
+            return new Vector<float>(storage, new VectorDescriptor(storage.Length));
         }
     }
 
@@ -91,21 +52,27 @@ namespace MathKernel
             return new Vector<double>(storage, descriptor);
         }
 
-        public static Vector<double> Create(double[] storage, int size, int offset, int stride)
-        {
-            return new Vector<double>(storage, size, offset, stride);
-        }
-
-        public static Vector<double> Create(double[] storage, int size, int offset)
-        {
-            return new Vector<double>(storage, size, offset, 1);
-        }
-
         public static Vector<double> Create(double[] storage)
         {
             Requires.NotNull(storage, nameof(storage));
 
-            return new Vector<double>(storage, storage.Length, 0, 1);
+            return new Vector<double>(storage, new VectorDescriptor(storage.Length));
+        }
+    }
+
+    [Duplicate(typeof(complexf))]
+    public static partial class Vector
+    {
+        public static Vector<complexf> Create(complexf[] storage, VectorDescriptor descriptor)
+        {
+            return new Vector<complexf>(storage, descriptor);
+        }
+
+        public static Vector<complexf> Create(complexf[] storage)
+        {
+            Requires.NotNull(storage, nameof(storage));
+
+            return new Vector<complexf>(storage, new VectorDescriptor(storage.Length));
         }
     }
 
@@ -117,21 +84,11 @@ namespace MathKernel
             return new Vector<complex>(storage, descriptor);
         }
 
-        public static Vector<complex> Create(complex[] storage, int size, int offset, int stride)
-        {
-            return new Vector<complex>(storage, size, offset, stride);
-        }
-
-        public static Vector<complex> Create(complex[] storage, int size, int offset)
-        {
-            return new Vector<complex>(storage, size, offset, 1);
-        }
-
         public static Vector<complex> Create(complex[] storage)
         {
             Requires.NotNull(storage, nameof(storage));
 
-            return new Vector<complex>(storage, storage.Length, 0, 1);
+            return new Vector<complex>(storage, new VectorDescriptor(storage.Length));
         }
     }
 }

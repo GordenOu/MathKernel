@@ -9,5 +9,7 @@ namespace MathKernel.Resources
 
         public static string VectorSizesAreNotEqual =>
             GetString(nameof(VectorSizesAreNotEqual));
+
+        public static string Unreachable => nameof(Unreachable);
     }
 }
