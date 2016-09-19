@@ -1,7 +1,7 @@
 ﻿using System;
 using Core.Diagnostics;
 
-namespace MathKernel
+namespace MathKernel.LinearAlgebra
 {
     public class MatrixDescriptor
     {

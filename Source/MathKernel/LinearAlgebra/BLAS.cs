@@ -2,7 +2,7 @@
 using Core.Diagnostics;
 using MathKernel.Resources;
 
-namespace MathKernel
+namespace MathKernel.LinearAlgebra
 {
     public static unsafe partial class BLAS
     {

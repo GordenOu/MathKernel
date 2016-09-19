@@ -1,4 +1,4 @@
-﻿namespace MathKernel
+﻿namespace MathKernel.LinearAlgebra
 {
     internal enum CBLAS_LAYOUT
     {

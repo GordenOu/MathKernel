@@ -2,7 +2,7 @@
 
 namespace MathKernel.Tests
 {
-    internal static class ComplexTypeExtensions
+    public static class ComplexTypeExtensions
     {
         public static double AsDouble(this float value)
         {

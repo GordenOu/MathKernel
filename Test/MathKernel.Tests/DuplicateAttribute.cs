@@ -3,7 +3,7 @@
 namespace MathKernel.Tests
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
-    internal sealed class DuplicateAttribute
+    public sealed class DuplicateAttribute
         : Attribute
     {
         public Type DataType { get; }
@@ -15,7 +15,7 @@ namespace MathKernel.Tests
     }
 
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
-    internal sealed class RealTypeDuplicateAttribute
+    public sealed class RealTypeDuplicateAttribute
         : Attribute
     {
         public Type DataType { get; }
@@ -27,7 +27,7 @@ namespace MathKernel.Tests
     }
 
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = true)]
-    internal sealed class ComplexTypeDuplicateAttribute
+    public sealed class ComplexTypeDuplicateAttribute
         : Attribute
     {
         public Type DataType { get; }

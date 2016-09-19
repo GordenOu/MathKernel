@@ -9,16 +9,18 @@ namespace MathKernel.CodeGeneration
     internal static class BLASNativeMethodGenerator
     {
         /// <summary>
-        /// Generates the source code in MathKernel/BLASNativeMethods.cs.
+        /// Generates the source code in MathKernel/LinearAlgebra/BLASNativeMethods.cs.
         /// </summary>
         /// <param name="fileName">Path to mkl.h.</param>
-        /// <returns>The generated contents in MathKernel/BLASNativeMethods.cs.</returns>
+        /// <returns>
+        /// The generated contents in MathKernel/LinearAlgebra/BLASNativeMethods.cs.
+        /// </returns>
         public static string Generate(string fileName)
         {
             var builder = new IndentedStringBuilder()
                 .AppendLine("using System.Runtime.InteropServices;")
                 .AppendLine()
-                .AppendLine("namespace MathKernel")
+                .AppendLine("namespace MathKernel.LinearAlgebra")
                 .AppendLine("{");
             var methodBuilder = builder
                 .IncreaseIndent()

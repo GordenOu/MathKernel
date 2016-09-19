@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace MathKernel.Tests
 {
-    internal unsafe class Bytes : IDisposable
+    public sealed unsafe class Bytes : IDisposable
     {
         public IntPtr Ptr { get; }
 

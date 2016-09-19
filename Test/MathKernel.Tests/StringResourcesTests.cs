@@ -3,10 +3,10 @@ using System.Reflection;
 using MathKernel.Resources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace MathKernel.Tests.Resources
+namespace MathKernel.Tests
 {
     [TestClass]
-    public class StringsTests : MathKernelTests
+    public class StringResourcesTests : MathKernelTests
     {
         [TestMethod]
         public void AllResourceStringsAreValid()

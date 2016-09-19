@@ -4,7 +4,7 @@ using Core.Diagnostics;
 using MathKernel.Resources;
 using static System.Math;
 
-namespace MathKernel
+namespace MathKernel.LinearAlgebra
 {
     public class BandMatrix<T>
         where T : struct

@@ -1,8 +1,9 @@
 ﻿using System;
+using MathKernel.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using static System.Math;
 
-namespace MathKernel.Tests
+namespace MathKernel.LinearAlgebra.Tests
 {
     [TestClass]
     public unsafe partial class BLASTests : MathKernelTests, IDisposable

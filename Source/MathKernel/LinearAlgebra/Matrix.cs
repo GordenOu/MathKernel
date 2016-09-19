@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Core.Diagnostics;
 using MathKernel.Resources;
 
-namespace MathKernel
+namespace MathKernel.LinearAlgebra
 {
     public class Matrix<T>
         where T : struct

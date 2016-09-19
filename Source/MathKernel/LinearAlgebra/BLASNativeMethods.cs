@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace MathKernel
+namespace MathKernel.LinearAlgebra
 {
     internal static unsafe class BLASNativeMethods
     {

@@ -4,7 +4,7 @@ using System.Reflection;
 using Xunit;
 using Xunit.Sdk;
 
-namespace MathKernel.Tests
+namespace MathKernel
 {
     public sealed class TestMethodAttribute
         : FactAttribute

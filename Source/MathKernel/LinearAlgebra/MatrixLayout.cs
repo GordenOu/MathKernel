@@ -1,4 +1,4 @@
-﻿namespace MathKernel
+﻿namespace MathKernel.LinearAlgebra
 {
     public enum MatrixLayout
     {
