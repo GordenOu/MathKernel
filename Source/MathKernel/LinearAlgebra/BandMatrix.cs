@@ -66,54 +66,6 @@ namespace MathKernel.LinearAlgebra
                 Descriptor = Descriptor.ConjugateTranspose()
             };
         }
-
-        /// <summary>
-        /// Convert from full storage to band storage.
-        /// </summary>
-        public static BandMatrix<T> FromMatrix(Matrix<T> matrix, BandMatrixDescriptor descriptor)
-        {
-            Requires.NotNull(matrix, nameof(matrix));
-            Requires.NotNull(descriptor, nameof(descriptor));
-
-            if (matrix.Descriptor.Layout == MatrixLayout.ColumnMajor)
-            {
-                matrix = matrix.Transpose();
-            }
-            Debug.Assert(matrix.Descriptor.Layout == MatrixLayout.RowMajor);
-            BandMatrixDescriptor temp = null;
-            if (descriptor.Layout == MatrixLayout.ColumnMajor)
-            {
-                temp = descriptor;
-                descriptor = descriptor.Transpose();
-            }
-            Debug.Assert(descriptor.Layout == MatrixLayout.RowMajor);
-
-            T[] storage = new T[descriptor.Offset + descriptor.Rows * descriptor.Stride];
-            int offset1 = matrix.Descriptor.Offset;
-            int offset2 = descriptor.Offset;
-            for (int i = 0; i < descriptor.Rows; i++)
-            {
-                int begin1 = Max(0, i - descriptor.LowerBandwidth);
-                int begin2 = Max(0, descriptor.LowerBandwidth - i);
-                int end = Min(descriptor.Columns, i + descriptor.UpperBandwidth + 1);
-                for (int j1 = begin1, j2 = begin2; j1 <= end; j1++, j2++)
-                {
-                    storage[offset2 + j2] = matrix.Storage[offset1 + j1];
-                }
-
-                offset1 += matrix.Descriptor.Stride;
-                offset2 += descriptor.Stride;
-            }
-
-            if (temp == null)
-            {
-                return new BandMatrix<T>(storage, descriptor);
-            }
-            else
-            {
-                return new BandMatrix<T>(storage, temp);
-            }
-        }
     }
 
     [Duplicate(typeof(float))]
@@ -124,6 +76,54 @@ namespace MathKernel.LinearAlgebra
             BandMatrixDescriptor descriptor)
         {
             return new BandMatrix<float>(storage, descriptor);
+        }
+
+        /// <summary>
+        /// Convert from full storage to band storage.
+        /// </summary>
+        public static BandMatrix<float> FromMatrix(
+            Matrix<float> matrix,
+            int upperBandwidth,
+            int lowerBandwidth)
+        {
+            Requires.NotNull(matrix, nameof(matrix));
+
+            var descriptor = new BandMatrixDescriptor(
+                matrix.Descriptor.Rows,
+                matrix.Descriptor.Columns,
+                upperBandwidth,
+                lowerBandwidth,
+                matrix.Descriptor.Layout);
+            bool transposed = false;
+            if (matrix.Descriptor.Layout == MatrixLayout.ColumnMajor)
+            {
+                matrix = matrix.Transpose();
+                descriptor = descriptor.Transpose();
+                transposed = true;
+            }
+            Debug.Assert(matrix.Descriptor.Layout == MatrixLayout.RowMajor);
+            Debug.Assert(descriptor.Layout == MatrixLayout.RowMajor);
+
+            var storage = new float[descriptor.Rows * descriptor.Stride];
+            int offset1 = matrix.Descriptor.Offset;
+            int offset2 = 0;
+            for (int i = 0; i < descriptor.Rows; i++)
+            {
+                int begin1 = Max(0, i - descriptor.LowerBandwidth);
+                int begin2 = Max(0, descriptor.LowerBandwidth - i);
+                int end = Min(descriptor.Columns, i + descriptor.UpperBandwidth + 1);
+                for (int j1 = begin1, j2 = begin2; j1 < end; j1++, j2++)
+                {
+                    storage[offset2 + j2] = matrix.Storage[offset1 + j1];
+                }
+
+                offset1 += matrix.Descriptor.Stride;
+                offset2 += descriptor.Stride;
+            }
+
+            return transposed
+                ? new BandMatrix<float>(storage, descriptor.Transpose())
+                : new BandMatrix<float>(storage, descriptor);
         }
     }
 
@@ -136,6 +136,54 @@ namespace MathKernel.LinearAlgebra
         {
             return new BandMatrix<double>(storage, descriptor);
         }
+
+        /// <summary>
+        /// Convert from full storage to band storage.
+        /// </summary>
+        public static BandMatrix<double> FromMatrix(
+            Matrix<double> matrix,
+            int upperBandwidth,
+            int lowerBandwidth)
+        {
+            Requires.NotNull(matrix, nameof(matrix));
+
+            var descriptor = new BandMatrixDescriptor(
+                matrix.Descriptor.Rows,
+                matrix.Descriptor.Columns,
+                upperBandwidth,
+                lowerBandwidth,
+                matrix.Descriptor.Layout);
+            bool transposed = false;
+            if (matrix.Descriptor.Layout == MatrixLayout.ColumnMajor)
+            {
+                matrix = matrix.Transpose();
+                descriptor = descriptor.Transpose();
+                transposed = true;
+            }
+            Debug.Assert(matrix.Descriptor.Layout == MatrixLayout.RowMajor);
+            Debug.Assert(descriptor.Layout == MatrixLayout.RowMajor);
+
+            var storage = new double[descriptor.Rows * descriptor.Stride];
+            int offset1 = matrix.Descriptor.Offset;
+            int offset2 = 0;
+            for (int i = 0; i < descriptor.Rows; i++)
+            {
+                int begin1 = Max(0, i - descriptor.LowerBandwidth);
+                int begin2 = Max(0, descriptor.LowerBandwidth - i);
+                int end = Min(descriptor.Columns, i + descriptor.UpperBandwidth + 1);
+                for (int j1 = begin1, j2 = begin2; j1 < end; j1++, j2++)
+                {
+                    storage[offset2 + j2] = matrix.Storage[offset1 + j1];
+                }
+
+                offset1 += matrix.Descriptor.Stride;
+                offset2 += descriptor.Stride;
+            }
+
+            return transposed
+                ? new BandMatrix<double>(storage, descriptor.Transpose())
+                : new BandMatrix<double>(storage, descriptor);
+        }
     }
 
     [Duplicate(typeof(complexf))]
@@ -147,6 +195,54 @@ namespace MathKernel.LinearAlgebra
         {
             return new BandMatrix<complexf>(storage, descriptor);
         }
+
+        /// <summary>
+        /// Convert from full storage to band storage.
+        /// </summary>
+        public static BandMatrix<complexf> FromMatrix(
+            Matrix<complexf> matrix,
+            int upperBandwidth,
+            int lowerBandwidth)
+        {
+            Requires.NotNull(matrix, nameof(matrix));
+
+            var descriptor = new BandMatrixDescriptor(
+                matrix.Descriptor.Rows,
+                matrix.Descriptor.Columns,
+                upperBandwidth,
+                lowerBandwidth,
+                matrix.Descriptor.Layout);
+            bool transposed = false;
+            if (matrix.Descriptor.Layout == MatrixLayout.ColumnMajor)
+            {
+                matrix = matrix.Transpose();
+                descriptor = descriptor.Transpose();
+                transposed = true;
+            }
+            Debug.Assert(matrix.Descriptor.Layout == MatrixLayout.RowMajor);
+            Debug.Assert(descriptor.Layout == MatrixLayout.RowMajor);
+
+            var storage = new complexf[descriptor.Rows * descriptor.Stride];
+            int offset1 = matrix.Descriptor.Offset;
+            int offset2 = 0;
+            for (int i = 0; i < descriptor.Rows; i++)
+            {
+                int begin1 = Max(0, i - descriptor.LowerBandwidth);
+                int begin2 = Max(0, descriptor.LowerBandwidth - i);
+                int end = Min(descriptor.Columns, i + descriptor.UpperBandwidth + 1);
+                for (int j1 = begin1, j2 = begin2; j1 < end; j1++, j2++)
+                {
+                    storage[offset2 + j2] = matrix.Storage[offset1 + j1];
+                }
+
+                offset1 += matrix.Descriptor.Stride;
+                offset2 += descriptor.Stride;
+            }
+
+            return transposed
+                ? new BandMatrix<complexf>(storage, descriptor.Transpose())
+                : new BandMatrix<complexf>(storage, descriptor);
+        }
     }
 
     [Duplicate(typeof(complex))]
@@ -157,6 +253,54 @@ namespace MathKernel.LinearAlgebra
             BandMatrixDescriptor descriptor)
         {
             return new BandMatrix<complex>(storage, descriptor);
+        }
+
+        /// <summary>
+        /// Convert from full storage to band storage.
+        /// </summary>
+        public static BandMatrix<complex> FromMatrix(
+            Matrix<complex> matrix,
+            int upperBandwidth,
+            int lowerBandwidth)
+        {
+            Requires.NotNull(matrix, nameof(matrix));
+
+            var descriptor = new BandMatrixDescriptor(
+                matrix.Descriptor.Rows,
+                matrix.Descriptor.Columns,
+                upperBandwidth,
+                lowerBandwidth,
+                matrix.Descriptor.Layout);
+            bool transposed = false;
+            if (matrix.Descriptor.Layout == MatrixLayout.ColumnMajor)
+            {
+                matrix = matrix.Transpose();
+                descriptor = descriptor.Transpose();
+                transposed = true;
+            }
+            Debug.Assert(matrix.Descriptor.Layout == MatrixLayout.RowMajor);
+            Debug.Assert(descriptor.Layout == MatrixLayout.RowMajor);
+
+            var storage = new complex[descriptor.Rows * descriptor.Stride];
+            int offset1 = matrix.Descriptor.Offset;
+            int offset2 = 0;
+            for (int i = 0; i < descriptor.Rows; i++)
+            {
+                int begin1 = Max(0, i - descriptor.LowerBandwidth);
+                int begin2 = Max(0, descriptor.LowerBandwidth - i);
+                int end = Min(descriptor.Columns, i + descriptor.UpperBandwidth + 1);
+                for (int j1 = begin1, j2 = begin2; j1 < end; j1++, j2++)
+                {
+                    storage[offset2 + j2] = matrix.Storage[offset1 + j1];
+                }
+
+                offset1 += matrix.Descriptor.Stride;
+                offset2 += descriptor.Stride;
+            }
+
+            return transposed
+                ? new BandMatrix<complex>(storage, descriptor.Transpose())
+                : new BandMatrix<complex>(storage, descriptor);
         }
     }
 }

@@ -62,7 +62,7 @@ namespace MathKernel.LinearAlgebra
                   upperBandwidth,
                   lowerBandwidth,
                   offset,
-                  layout == MatrixLayout.RowMajor ? columns : rows,
+                  upperBandwidth + lowerBandwidth + 1,
                   layout)
         { }
 
@@ -78,7 +78,7 @@ namespace MathKernel.LinearAlgebra
                   upperBandwidth,
                   lowerBandwidth,
                   0,
-                  layout == MatrixLayout.RowMajor ? columns : rows,
+                  upperBandwidth + lowerBandwidth + 1,
                   layout)
         { }
 
