@@ -2,7 +2,7 @@
 
 namespace MathKernel.LinearAlgebra
 {
-    internal static unsafe class BLASNativeMethods
+    internal static unsafe class NativeMethods
     {
         private const string dllName = "mkl_rt";
 

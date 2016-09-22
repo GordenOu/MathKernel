@@ -39,6 +39,10 @@ namespace MathKernel.LinearAlgebra
             Requires.NonNegative(upperBandwidth, nameof(upperBandwidth));
             Requires.NonNegative(lowerBandwidth, nameof(lowerBandwidth));
             Requires.Range(stride, nameof(stride), stride >= upperBandwidth + lowerBandwidth + 1);
+            Requires.Range(
+                layout,
+                nameof(layout),
+                layout == MatrixLayout.RowMajor || layout == MatrixLayout.ColumnMajor);
 
             Rows = rows;
             Columns = columns;

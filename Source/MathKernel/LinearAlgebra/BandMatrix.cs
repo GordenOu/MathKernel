@@ -87,6 +87,14 @@ namespace MathKernel.LinearAlgebra
             int lowerBandwidth)
         {
             Requires.NotNull(matrix, nameof(matrix));
+            Requires.Range(
+                upperBandwidth,
+                nameof(upperBandwidth),
+                0 <= upperBandwidth && upperBandwidth < matrix.Descriptor.Columns);
+            Requires.Range(
+                lowerBandwidth,
+                nameof(lowerBandwidth),
+                0 <= lowerBandwidth && lowerBandwidth < matrix.Descriptor.Rows);
 
             var descriptor = new BandMatrixDescriptor(
                 matrix.Descriptor.Rows,
@@ -146,6 +154,14 @@ namespace MathKernel.LinearAlgebra
             int lowerBandwidth)
         {
             Requires.NotNull(matrix, nameof(matrix));
+            Requires.Range(
+                upperBandwidth,
+                nameof(upperBandwidth),
+                0 <= upperBandwidth && upperBandwidth < matrix.Descriptor.Columns);
+            Requires.Range(
+                lowerBandwidth,
+                nameof(lowerBandwidth),
+                0 <= lowerBandwidth && lowerBandwidth < matrix.Descriptor.Rows);
 
             var descriptor = new BandMatrixDescriptor(
                 matrix.Descriptor.Rows,
@@ -205,6 +221,14 @@ namespace MathKernel.LinearAlgebra
             int lowerBandwidth)
         {
             Requires.NotNull(matrix, nameof(matrix));
+            Requires.Range(
+                upperBandwidth,
+                nameof(upperBandwidth),
+                0 <= upperBandwidth && upperBandwidth < matrix.Descriptor.Columns);
+            Requires.Range(
+                lowerBandwidth,
+                nameof(lowerBandwidth),
+                0 <= lowerBandwidth && lowerBandwidth < matrix.Descriptor.Rows);
 
             var descriptor = new BandMatrixDescriptor(
                 matrix.Descriptor.Rows,
@@ -264,6 +288,14 @@ namespace MathKernel.LinearAlgebra
             int lowerBandwidth)
         {
             Requires.NotNull(matrix, nameof(matrix));
+            Requires.Range(
+                upperBandwidth,
+                nameof(upperBandwidth),
+                0 <= upperBandwidth && upperBandwidth < matrix.Descriptor.Columns);
+            Requires.Range(
+                lowerBandwidth,
+                nameof(lowerBandwidth),
+                0 <= lowerBandwidth && lowerBandwidth < matrix.Descriptor.Rows);
 
             var descriptor = new BandMatrixDescriptor(
                 matrix.Descriptor.Rows,

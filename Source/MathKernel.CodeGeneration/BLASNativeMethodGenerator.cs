@@ -24,7 +24,7 @@ namespace MathKernel.CodeGeneration
                 .AppendLine("{");
             var methodBuilder = builder
                 .IncreaseIndent()
-                .AppendLine("internal static unsafe class BLASNativeMethods")
+                .AppendLine("internal static unsafe class NativeMethods")
                 .AppendLine("{")
                 .IncreaseIndent()
                 .AppendLine("private const string dllName = \"mkl_rt\";");

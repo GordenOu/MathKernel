@@ -12,7 +12,7 @@ namespace MathKernel.LinearAlgebra
 
         private static float asum(VectorDescriptor descriptor, float* x)
         {
-            return BLASNativeMethods.cblas_sasum(
+            return NativeMethods.cblas_sasum(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -20,7 +20,7 @@ namespace MathKernel.LinearAlgebra
 
         private static float asum(VectorDescriptor descriptor, complexf* x)
         {
-            return BLASNativeMethods.cblas_scasum(
+            return NativeMethods.cblas_scasum(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -28,7 +28,7 @@ namespace MathKernel.LinearAlgebra
 
         private static double asum(VectorDescriptor descriptor, double* x)
         {
-            return BLASNativeMethods.cblas_dasum(
+            return NativeMethods.cblas_dasum(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -36,7 +36,7 @@ namespace MathKernel.LinearAlgebra
 
         private static double asum(VectorDescriptor descriptor, complex* x)
         {
-            return BLASNativeMethods.cblas_dzasum(
+            return NativeMethods.cblas_dzasum(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -51,7 +51,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, float* x,
             VectorDescriptor yDescriptor, float* y)
         {
-            BLASNativeMethods.cblas_saxpy(
+            NativeMethods.cblas_saxpy(
                 xDescriptor.Size,
                 a,
                 x + xDescriptor.Offset, xDescriptor.Stride,
@@ -63,7 +63,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, double* x,
             VectorDescriptor yDescriptor, double* y)
         {
-            BLASNativeMethods.cblas_daxpy(
+            NativeMethods.cblas_daxpy(
                 xDescriptor.Size,
                 a,
                 x + xDescriptor.Offset, xDescriptor.Stride,
@@ -75,7 +75,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, complexf* x,
             VectorDescriptor yDescriptor, complexf* y)
         {
-            BLASNativeMethods.cblas_caxpy(
+            NativeMethods.cblas_caxpy(
                 xDescriptor.Size,
                 &a,
                 x + xDescriptor.Offset, xDescriptor.Stride,
@@ -87,7 +87,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, complex* x,
             VectorDescriptor yDescriptor, complex* y)
         {
-            BLASNativeMethods.cblas_zaxpy(
+            NativeMethods.cblas_zaxpy(
                 xDescriptor.Size,
                 &a,
                 x + xDescriptor.Offset, xDescriptor.Stride,
@@ -102,7 +102,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, float* x,
             VectorDescriptor yDescriptor, float* y)
         {
-            BLASNativeMethods.cblas_scopy(
+            NativeMethods.cblas_scopy(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride);
@@ -112,7 +112,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, double* x,
             VectorDescriptor yDescriptor, double* y)
         {
-            BLASNativeMethods.cblas_dcopy(
+            NativeMethods.cblas_dcopy(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride);
@@ -122,7 +122,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, complexf* x,
             VectorDescriptor yDescriptor, complexf* y)
         {
-            BLASNativeMethods.cblas_ccopy(
+            NativeMethods.cblas_ccopy(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride);
@@ -132,7 +132,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, complex* x,
             VectorDescriptor yDescriptor, complex* y)
         {
-            BLASNativeMethods.cblas_zcopy(
+            NativeMethods.cblas_zcopy(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride);
@@ -146,7 +146,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, float* x,
             VectorDescriptor yDescriptor, float* y)
         {
-            return BLASNativeMethods.cblas_sdot(
+            return NativeMethods.cblas_sdot(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride);
@@ -156,7 +156,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, double* x,
             VectorDescriptor yDescriptor, double* y)
         {
-            return BLASNativeMethods.cblas_ddot(
+            return NativeMethods.cblas_ddot(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride);
@@ -171,7 +171,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, float* x,
             VectorDescriptor yDescriptor, float* y)
         {
-            return BLASNativeMethods.cblas_sdsdot(
+            return NativeMethods.cblas_sdsdot(
                 xDescriptor.Size,
                 b,
                 x + xDescriptor.Offset, xDescriptor.Stride,
@@ -221,7 +221,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, float* x,
             VectorDescriptor yDescriptor, float* y)
         {
-            return BLASNativeMethods.cblas_dsdot(
+            return NativeMethods.cblas_dsdot(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride);
@@ -274,7 +274,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor yDescriptor, complexf* y)
         {
             complexf result;
-            BLASNativeMethods.cblas_cdotc_sub(
+            NativeMethods.cblas_cdotc_sub(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride,
@@ -287,7 +287,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor yDescriptor, complex* y)
         {
             complex result;
-            BLASNativeMethods.cblas_zdotc_sub(
+            NativeMethods.cblas_zdotc_sub(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride,
@@ -304,7 +304,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor yDescriptor, complexf* y)
         {
             complexf result;
-            BLASNativeMethods.cblas_cdotu_sub(
+            NativeMethods.cblas_cdotu_sub(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride,
@@ -317,7 +317,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor yDescriptor, complex* y)
         {
             complex result;
-            BLASNativeMethods.cblas_zdotu_sub(
+            NativeMethods.cblas_zdotu_sub(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride,
@@ -331,7 +331,7 @@ namespace MathKernel.LinearAlgebra
 
         private static float nrm2(VectorDescriptor descriptor, float* x)
         {
-            return BLASNativeMethods.cblas_snrm2(
+            return NativeMethods.cblas_snrm2(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -339,7 +339,7 @@ namespace MathKernel.LinearAlgebra
 
         private static double nrm2(VectorDescriptor descriptor, double* x)
         {
-            return BLASNativeMethods.cblas_dnrm2(
+            return NativeMethods.cblas_dnrm2(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -347,7 +347,7 @@ namespace MathKernel.LinearAlgebra
 
         private static float nrm2(VectorDescriptor descriptor, complexf* x)
         {
-            return BLASNativeMethods.cblas_scnrm2(
+            return NativeMethods.cblas_scnrm2(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -355,7 +355,7 @@ namespace MathKernel.LinearAlgebra
 
         private static double nrm2(VectorDescriptor descriptor, complex* x)
         {
-            return BLASNativeMethods.cblas_dznrm2(
+            return NativeMethods.cblas_dznrm2(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -370,7 +370,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor yDescriptor, float* y,
             float c, float s)
         {
-            BLASNativeMethods.cblas_srot(
+            NativeMethods.cblas_srot(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride,
@@ -382,7 +382,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor yDescriptor, double* y,
             double c, double s)
         {
-            BLASNativeMethods.cblas_drot(
+            NativeMethods.cblas_drot(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride,
@@ -394,7 +394,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor yDescriptor, complexf* y,
             float c, float s)
         {
-            BLASNativeMethods.cblas_csrot(
+            NativeMethods.cblas_csrot(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride,
@@ -406,7 +406,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor yDescriptor, complex* y,
             double c, double s)
         {
-            BLASNativeMethods.cblas_zdrot(
+            NativeMethods.cblas_zdrot(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride,
@@ -447,7 +447,7 @@ namespace MathKernel.LinearAlgebra
                 h[0] = -1;
             }
 
-            BLASNativeMethods.cblas_srotm(
+            NativeMethods.cblas_srotm(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride,
@@ -484,7 +484,7 @@ namespace MathKernel.LinearAlgebra
                 h[0] = -1;
             }
 
-            BLASNativeMethods.cblas_drotm(
+            NativeMethods.cblas_drotm(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride,
@@ -497,7 +497,7 @@ namespace MathKernel.LinearAlgebra
 
         private static void scal(float a, VectorDescriptor descriptor, float* x)
         {
-            BLASNativeMethods.cblas_sscal(
+            NativeMethods.cblas_sscal(
                 descriptor.Size,
                 a,
                 x + descriptor.Offset,
@@ -506,7 +506,7 @@ namespace MathKernel.LinearAlgebra
 
         private static void scal(double a, VectorDescriptor descriptor, double* x)
         {
-            BLASNativeMethods.cblas_dscal(
+            NativeMethods.cblas_dscal(
                 descriptor.Size,
                 a,
                 x + descriptor.Offset,
@@ -515,7 +515,7 @@ namespace MathKernel.LinearAlgebra
 
         private static void scal(complexf a, VectorDescriptor descriptor, complexf* x)
         {
-            BLASNativeMethods.cblas_cscal(
+            NativeMethods.cblas_cscal(
                 descriptor.Size,
                 &a,
                 x + descriptor.Offset,
@@ -524,7 +524,7 @@ namespace MathKernel.LinearAlgebra
 
         private static void scal(complex a, VectorDescriptor descriptor, complex* x)
         {
-            BLASNativeMethods.cblas_zscal(
+            NativeMethods.cblas_zscal(
                 descriptor.Size,
                 &a,
                 x + descriptor.Offset,
@@ -533,7 +533,7 @@ namespace MathKernel.LinearAlgebra
 
         private static void scal(float a, VectorDescriptor descriptor, complexf* x)
         {
-            BLASNativeMethods.cblas_csscal(
+            NativeMethods.cblas_csscal(
                 descriptor.Size,
                 a,
                 x + descriptor.Offset,
@@ -542,7 +542,7 @@ namespace MathKernel.LinearAlgebra
 
         private static void scal(double a, VectorDescriptor descriptor, complex* x)
         {
-            BLASNativeMethods.cblas_zdscal(
+            NativeMethods.cblas_zdscal(
                 descriptor.Size,
                 a,
                 x + descriptor.Offset,
@@ -557,7 +557,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, float* x,
             VectorDescriptor yDescriptor, float* y)
         {
-            BLASNativeMethods.cblas_sswap(
+            NativeMethods.cblas_sswap(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride);
@@ -567,7 +567,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, double* x,
             VectorDescriptor yDescriptor, double* y)
         {
-            BLASNativeMethods.cblas_dswap(
+            NativeMethods.cblas_dswap(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride);
@@ -577,7 +577,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, complexf* x,
             VectorDescriptor yDescriptor, complexf* y)
         {
-            BLASNativeMethods.cblas_cswap(
+            NativeMethods.cblas_cswap(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride);
@@ -587,7 +587,7 @@ namespace MathKernel.LinearAlgebra
             VectorDescriptor xDescriptor, complex* x,
             VectorDescriptor yDescriptor, complex* y)
         {
-            BLASNativeMethods.cblas_zswap(
+            NativeMethods.cblas_zswap(
                 xDescriptor.Size,
                 x + xDescriptor.Offset, xDescriptor.Stride,
                 y + yDescriptor.Offset, yDescriptor.Stride);
@@ -599,7 +599,7 @@ namespace MathKernel.LinearAlgebra
 
         private static int iamax(VectorDescriptor descriptor, float* x)
         {
-            return (int)BLASNativeMethods.cblas_isamax(
+            return (int)NativeMethods.cblas_isamax(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -607,7 +607,7 @@ namespace MathKernel.LinearAlgebra
 
         private static int iamax(VectorDescriptor descriptor, double* x)
         {
-            return (int)BLASNativeMethods.cblas_idamax(
+            return (int)NativeMethods.cblas_idamax(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -615,7 +615,7 @@ namespace MathKernel.LinearAlgebra
 
         private static int iamax(VectorDescriptor descriptor, complexf* x)
         {
-            return (int)BLASNativeMethods.cblas_icamax(
+            return (int)NativeMethods.cblas_icamax(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -623,7 +623,7 @@ namespace MathKernel.LinearAlgebra
 
         private static int iamax(VectorDescriptor descriptor, complex* x)
         {
-            return (int)BLASNativeMethods.cblas_izamax(
+            return (int)NativeMethods.cblas_izamax(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -635,7 +635,7 @@ namespace MathKernel.LinearAlgebra
 
         private static int iamin(VectorDescriptor descriptor, float* x)
         {
-            return (int)BLASNativeMethods.cblas_isamin(
+            return (int)NativeMethods.cblas_isamin(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -643,7 +643,7 @@ namespace MathKernel.LinearAlgebra
 
         private static int iamin(VectorDescriptor descriptor, double* x)
         {
-            return (int)BLASNativeMethods.cblas_idamin(
+            return (int)NativeMethods.cblas_idamin(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -651,7 +651,7 @@ namespace MathKernel.LinearAlgebra
 
         private static int iamin(VectorDescriptor descriptor, complexf* x)
         {
-            return (int)BLASNativeMethods.cblas_icamin(
+            return (int)NativeMethods.cblas_icamin(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -659,7 +659,7 @@ namespace MathKernel.LinearAlgebra
 
         private static int iamin(VectorDescriptor descriptor, complex* x)
         {
-            return (int)BLASNativeMethods.cblas_izamin(
+            return (int)NativeMethods.cblas_izamin(
                 descriptor.Size,
                 x + descriptor.Offset,
                 descriptor.Stride);
@@ -690,7 +690,7 @@ namespace MathKernel.LinearAlgebra
             {
                 trans = CBLAS_TRANSPOSE.CblasNoTrans;
             }
-            BLASNativeMethods.cblas_sgbmv(
+            NativeMethods.cblas_sgbmv(
                 (CBLAS_LAYOUT)ADescriptor.Layout,
                 trans,
                 ADescriptor.Rows, ADescriptor.Columns,
@@ -719,7 +719,7 @@ namespace MathKernel.LinearAlgebra
             {
                 trans = CBLAS_TRANSPOSE.CblasNoTrans;
             }
-            BLASNativeMethods.cblas_dgbmv(
+            NativeMethods.cblas_dgbmv(
                 (CBLAS_LAYOUT)ADescriptor.Layout,
                 trans,
                 ADescriptor.Rows, ADescriptor.Columns,
@@ -748,7 +748,7 @@ namespace MathKernel.LinearAlgebra
             {
                 trans = CBLAS_TRANSPOSE.CblasNoTrans;
             }
-            BLASNativeMethods.cblas_cgbmv(
+            NativeMethods.cblas_cgbmv(
                 (CBLAS_LAYOUT)ADescriptor.Layout,
                 trans,
                 ADescriptor.Rows, ADescriptor.Columns,
@@ -777,11 +777,127 @@ namespace MathKernel.LinearAlgebra
             {
                 trans = CBLAS_TRANSPOSE.CblasNoTrans;
             }
-            BLASNativeMethods.cblas_zgbmv(
+            NativeMethods.cblas_zgbmv(
                 (CBLAS_LAYOUT)ADescriptor.Layout,
                 trans,
                 ADescriptor.Rows, ADescriptor.Columns,
                 ADescriptor.LowerBandwidth, ADescriptor.UpperBandwidth,
+                &alpha,
+                A + ADescriptor.Offset, ADescriptor.Stride,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                &beta,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        #endregion
+
+        #region gemv
+
+        private static void gemv(
+            float alpha,
+            MatrixDescriptor ADescriptor, float* A,
+            VectorDescriptor xDescriptor, float* x,
+            float beta,
+            VectorDescriptor yDescriptor, float* y)
+        {
+            CBLAS_TRANSPOSE trans;
+            if (ADescriptor.IsConjugated)
+            {
+                trans = CBLAS_TRANSPOSE.CblasConjTrans;
+                ADescriptor = ADescriptor.Transpose();
+            }
+            else
+            {
+                trans = CBLAS_TRANSPOSE.CblasNoTrans;
+            }
+            NativeMethods.cblas_sgemv(
+                (CBLAS_LAYOUT)ADescriptor.Layout,
+                trans,
+                ADescriptor.Rows, ADescriptor.Columns,
+                alpha,
+                A + ADescriptor.Offset, ADescriptor.Stride,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                beta,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        private static void gemv(
+            double alpha,
+            MatrixDescriptor ADescriptor, double* A,
+            VectorDescriptor xDescriptor, double* x,
+            double beta,
+            VectorDescriptor yDescriptor, double* y)
+        {
+            CBLAS_TRANSPOSE trans;
+            if (ADescriptor.IsConjugated)
+            {
+                trans = CBLAS_TRANSPOSE.CblasConjTrans;
+                ADescriptor = ADescriptor.Transpose();
+            }
+            else
+            {
+                trans = CBLAS_TRANSPOSE.CblasNoTrans;
+            }
+            NativeMethods.cblas_dgemv(
+                (CBLAS_LAYOUT)ADescriptor.Layout,
+                trans,
+                ADescriptor.Rows, ADescriptor.Columns,
+                alpha,
+                A + ADescriptor.Offset, ADescriptor.Stride,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                beta,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        private static void gemv(
+            complexf alpha,
+            MatrixDescriptor ADescriptor, complexf* A,
+            VectorDescriptor xDescriptor, complexf* x,
+            complexf beta,
+            VectorDescriptor yDescriptor, complexf* y)
+        {
+            CBLAS_TRANSPOSE trans;
+            if (ADescriptor.IsConjugated)
+            {
+                trans = CBLAS_TRANSPOSE.CblasConjTrans;
+                ADescriptor = ADescriptor.Transpose();
+            }
+            else
+            {
+                trans = CBLAS_TRANSPOSE.CblasNoTrans;
+            }
+            NativeMethods.cblas_cgemv(
+                (CBLAS_LAYOUT)ADescriptor.Layout,
+                trans,
+                ADescriptor.Rows, ADescriptor.Columns,
+                &alpha,
+                A + ADescriptor.Offset, ADescriptor.Stride,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                &beta,
+                y + yDescriptor.Offset, yDescriptor.Stride);
+        }
+
+        private static void gemv(
+            complex alpha,
+            MatrixDescriptor ADescriptor, complex* A,
+            VectorDescriptor xDescriptor, complex* x,
+            complex beta,
+            VectorDescriptor yDescriptor, complex* y)
+        {
+            CBLAS_TRANSPOSE trans;
+            if (ADescriptor.IsConjugated)
+            {
+                trans = CBLAS_TRANSPOSE.CblasConjTrans;
+                ADescriptor = ADescriptor.Transpose();
+            }
+            else
+            {
+                trans = CBLAS_TRANSPOSE.CblasNoTrans;
+            }
+            NativeMethods.cblas_zgemv(
+                (CBLAS_LAYOUT)ADescriptor.Layout,
+                trans,
+                ADescriptor.Rows, ADescriptor.Columns,
                 &alpha,
                 A + ADescriptor.Offset, ADescriptor.Stride,
                 x + xDescriptor.Offset, xDescriptor.Stride,
@@ -1034,6 +1150,47 @@ namespace MathKernel.LinearAlgebra
             }
         }
 
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void GEMV(
+            float alpha,
+            MatrixDescriptor ADescriptor, float* A,
+            VectorDescriptor xDescriptor, float* x,
+            float beta,
+            VectorDescriptor yDescriptor, float* y)
+        {
+            Requires.NotNull(ADescriptor, nameof(ADescriptor));
+            Requires.NotNullPtr(A, nameof(A));
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+
+            gemv(alpha, ADescriptor, A, xDescriptor, x, beta, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        public static void GBMV(
+            float alpha,
+            Matrix<float> A,
+            Vector<float> x,
+            float beta,
+            Vector<float> y)
+        {
+            Requires.NotNull(A, nameof(A));
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+
+            fixed (float* APtr = A.Storage, xPtr = x.Storage, yPtr = y.Storage)
+            {
+                gemv(alpha, A.Descriptor, APtr, x.Descriptor, xPtr, beta, y.Descriptor, yPtr);
+            }
+        }
+
         #endregion
     }
 
@@ -1274,6 +1431,47 @@ namespace MathKernel.LinearAlgebra
             fixed (complexf* APtr = A.Storage, xPtr = x.Storage, yPtr = y.Storage)
             {
                 gbmv(alpha, A.Descriptor, APtr, x.Descriptor, xPtr, beta, y.Descriptor, yPtr);
+            }
+        }
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void GEMV(
+            complexf alpha,
+            MatrixDescriptor ADescriptor, complexf* A,
+            VectorDescriptor xDescriptor, complexf* x,
+            complexf beta,
+            VectorDescriptor yDescriptor, complexf* y)
+        {
+            Requires.NotNull(ADescriptor, nameof(ADescriptor));
+            Requires.NotNullPtr(A, nameof(A));
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+
+            gemv(alpha, ADescriptor, A, xDescriptor, x, beta, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        public static void GBMV(
+            complexf alpha,
+            Matrix<complexf> A,
+            Vector<complexf> x,
+            complexf beta,
+            Vector<complexf> y)
+        {
+            Requires.NotNull(A, nameof(A));
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+
+            fixed (complexf* APtr = A.Storage, xPtr = x.Storage, yPtr = y.Storage)
+            {
+                gemv(alpha, A.Descriptor, APtr, x.Descriptor, xPtr, beta, y.Descriptor, yPtr);
             }
         }
 
@@ -1520,6 +1718,47 @@ namespace MathKernel.LinearAlgebra
             }
         }
 
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void GEMV(
+            double alpha,
+            MatrixDescriptor ADescriptor, double* A,
+            VectorDescriptor xDescriptor, double* x,
+            double beta,
+            VectorDescriptor yDescriptor, double* y)
+        {
+            Requires.NotNull(ADescriptor, nameof(ADescriptor));
+            Requires.NotNullPtr(A, nameof(A));
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+
+            gemv(alpha, ADescriptor, A, xDescriptor, x, beta, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        public static void GBMV(
+            double alpha,
+            Matrix<double> A,
+            Vector<double> x,
+            double beta,
+            Vector<double> y)
+        {
+            Requires.NotNull(A, nameof(A));
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+
+            fixed (double* APtr = A.Storage, xPtr = x.Storage, yPtr = y.Storage)
+            {
+                gemv(alpha, A.Descriptor, APtr, x.Descriptor, xPtr, beta, y.Descriptor, yPtr);
+            }
+        }
+
         #endregion
     }
 
@@ -1760,6 +1999,47 @@ namespace MathKernel.LinearAlgebra
             fixed (complex* APtr = A.Storage, xPtr = x.Storage, yPtr = y.Storage)
             {
                 gbmv(alpha, A.Descriptor, APtr, x.Descriptor, xPtr, beta, y.Descriptor, yPtr);
+            }
+        }
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void GEMV(
+            complex alpha,
+            MatrixDescriptor ADescriptor, complex* A,
+            VectorDescriptor xDescriptor, complex* x,
+            complex beta,
+            VectorDescriptor yDescriptor, complex* y)
+        {
+            Requires.NotNull(ADescriptor, nameof(ADescriptor));
+            Requires.NotNullPtr(A, nameof(A));
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+
+            gemv(alpha, ADescriptor, A, xDescriptor, x, beta, yDescriptor, y);
+        }
+
+        /// <summary>
+        /// y = alpha * A * x + beta * y.
+        /// </summary>
+        public static void GBMV(
+            complex alpha,
+            Matrix<complex> A,
+            Vector<complex> x,
+            complex beta,
+            Vector<complex> y)
+        {
+            Requires.NotNull(A, nameof(A));
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+
+            fixed (complex* APtr = A.Storage, xPtr = x.Storage, yPtr = y.Storage)
+            {
+                gemv(alpha, A.Descriptor, APtr, x.Descriptor, xPtr, beta, y.Descriptor, yPtr);
             }
         }
 
