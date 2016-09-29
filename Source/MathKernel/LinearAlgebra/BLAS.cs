@@ -1174,7 +1174,7 @@ namespace MathKernel.LinearAlgebra
         /// <summary>
         /// y = alpha * A * x + beta * y.
         /// </summary>
-        public static void GBMV(
+        public static void GEMV(
             float alpha,
             Matrix<float> A,
             Vector<float> x,
@@ -1458,7 +1458,7 @@ namespace MathKernel.LinearAlgebra
         /// <summary>
         /// y = alpha * A * x + beta * y.
         /// </summary>
-        public static void GBMV(
+        public static void GEMV(
             complexf alpha,
             Matrix<complexf> A,
             Vector<complexf> x,
@@ -1742,7 +1742,7 @@ namespace MathKernel.LinearAlgebra
         /// <summary>
         /// y = alpha * A * x + beta * y.
         /// </summary>
-        public static void GBMV(
+        public static void GEMV(
             double alpha,
             Matrix<double> A,
             Vector<double> x,
@@ -2026,7 +2026,7 @@ namespace MathKernel.LinearAlgebra
         /// <summary>
         /// y = alpha * A * x + beta * y.
         /// </summary>
-        public static void GBMV(
+        public static void GEMV(
             complex alpha,
             Matrix<complex> A,
             Vector<complex> x,

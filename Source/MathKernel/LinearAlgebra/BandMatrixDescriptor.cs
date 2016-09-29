@@ -33,11 +33,11 @@ namespace MathKernel.LinearAlgebra
         {
             Requires.Positive(rows, nameof(rows));
             Requires.Positive(columns, nameof(columns));
+            Requires.NonNegative(upperBandwidth, nameof(upperBandwidth));
             Requires.Range(upperBandwidth, nameof(upperBandwidth), upperBandwidth < columns);
+            Requires.NonNegative(lowerBandwidth, nameof(lowerBandwidth));
             Requires.Range(lowerBandwidth, nameof(lowerBandwidth), lowerBandwidth < rows);
             Requires.NonNegative(offset, nameof(offset));
-            Requires.NonNegative(upperBandwidth, nameof(upperBandwidth));
-            Requires.NonNegative(lowerBandwidth, nameof(lowerBandwidth));
             Requires.Range(stride, nameof(stride), stride >= upperBandwidth + lowerBandwidth + 1);
             Requires.Range(
                 layout,

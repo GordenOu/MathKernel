@@ -74,9 +74,42 @@ namespace MathKernel.LinearAlgebra.Tests
             yPtr[4] = 1.4f;
         }
 
+        private void GetMatrices(
+            out Matrix<float> A,
+            out Matrix<float> B,
+            out float* APtr,
+            out float* BPtr)
+        {
+            A = Matrix.Create(
+                new float[]
+                {
+                    1.5f, 1.6f,
+                    1.7f, 1.8f
+                },
+                2, 2);
+            B = Matrix.Create(
+                new float[]
+                {
+                    0,
+                    1.9f, 2.1f, 0,
+                    2.2f, 2.3f, 0
+                },
+                new MatrixDescriptor(2, 2, 1, 3));
+            APtr = (float*)bytes + 4 * sizeof(float);
+            APtr[0] = 1.5f;
+            APtr[1] = 1.6f;
+            APtr[2] = 1.7f;
+            APtr[3] = 1.8f;
+            BPtr = (float*)bytes + 8 * sizeof(float);
+            BPtr[0] = 1.9f;
+            BPtr[1] = 2.1f;
+            BPtr[2] = 2.2f;
+            BPtr[3] = 2.3f;
+        }
+
         [DataTestMethod]
         [DataRow(null)]
-        public void Level1(float? dataType)
+        public void Level1(float? value)
         {
             Vector<float> x;
             Vector<float> y;
@@ -184,6 +217,43 @@ namespace MathKernel.LinearAlgebra.Tests
             Assert.AreEqual(1, iAMax);
             Assert.AreEqual(0, iAMin);
         }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        public void Level2(float? value)
+        {
+            Vector<float> x;
+            Vector<float> y;
+            float* xPtr;
+            float* yPtr;
+            Matrix<float> A;
+            Matrix<float> B;
+            float* APtr;
+            float* BPtr;
+
+            // GEMV
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            GetMatrices(out A, out B, out APtr, out BPtr);
+            BLAS.GEMV(1f, A, x, 1f, y);
+            Assert.AreEqual(4.87, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(5.43, y.Storage[4].AsDouble(), delta);
+            BLAS.GEMV(1f, A.Descriptor, APtr, x.Descriptor, xPtr, 1f, y.Descriptor, yPtr);
+            Assert.AreEqual(4.87, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(5.43, yPtr[4].AsDouble(), delta);
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            GetMatrices(out A, out B, out APtr, out BPtr);
+            BLAS.GEMV(1f, A.Transpose(), x, 1f, y);
+            Assert.AreEqual(4.99, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(5.32, y.Storage[4].AsDouble(), delta);
+            BLAS.GEMV(
+                1f,
+                A.Descriptor.Transpose(), APtr,
+                x.Descriptor, xPtr,
+                1f,
+                y.Descriptor, yPtr);
+            Assert.AreEqual(4.99, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(5.32, yPtr[4].AsDouble(), delta);
+        }
     }
 
     [Duplicate(typeof(double))]
@@ -209,9 +279,42 @@ namespace MathKernel.LinearAlgebra.Tests
             yPtr[4] = 1.4f;
         }
 
+        private void GetMatrices(
+            out Matrix<double> A,
+            out Matrix<double> B,
+            out double* APtr,
+            out double* BPtr)
+        {
+            A = Matrix.Create(
+                new double[]
+                {
+                    1.5f, 1.6f,
+                    1.7f, 1.8f
+                },
+                2, 2);
+            B = Matrix.Create(
+                new double[]
+                {
+                    0,
+                    1.9f, 2.1f, 0,
+                    2.2f, 2.3f, 0
+                },
+                new MatrixDescriptor(2, 2, 1, 3));
+            APtr = (double*)bytes + 4 * sizeof(double);
+            APtr[0] = 1.5f;
+            APtr[1] = 1.6f;
+            APtr[2] = 1.7f;
+            APtr[3] = 1.8f;
+            BPtr = (double*)bytes + 8 * sizeof(double);
+            BPtr[0] = 1.9f;
+            BPtr[1] = 2.1f;
+            BPtr[2] = 2.2f;
+            BPtr[3] = 2.3f;
+        }
+
         [DataTestMethod]
         [DataRow(null)]
-        public void Level1(double? dataType)
+        public void Level1(double? value)
         {
             Vector<double> x;
             Vector<double> y;
@@ -319,6 +422,43 @@ namespace MathKernel.LinearAlgebra.Tests
             Assert.AreEqual(1, iAMax);
             Assert.AreEqual(0, iAMin);
         }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        public void Level2(double? value)
+        {
+            Vector<double> x;
+            Vector<double> y;
+            double* xPtr;
+            double* yPtr;
+            Matrix<double> A;
+            Matrix<double> B;
+            double* APtr;
+            double* BPtr;
+
+            // GEMV
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            GetMatrices(out A, out B, out APtr, out BPtr);
+            BLAS.GEMV(1f, A, x, 1f, y);
+            Assert.AreEqual(4.87, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(5.43, y.Storage[4].AsDouble(), delta);
+            BLAS.GEMV(1f, A.Descriptor, APtr, x.Descriptor, xPtr, 1f, y.Descriptor, yPtr);
+            Assert.AreEqual(4.87, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(5.43, yPtr[4].AsDouble(), delta);
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            GetMatrices(out A, out B, out APtr, out BPtr);
+            BLAS.GEMV(1f, A.Transpose(), x, 1f, y);
+            Assert.AreEqual(4.99, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(5.32, y.Storage[4].AsDouble(), delta);
+            BLAS.GEMV(
+                1f,
+                A.Descriptor.Transpose(), APtr,
+                x.Descriptor, xPtr,
+                1f,
+                y.Descriptor, yPtr);
+            Assert.AreEqual(4.99, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(5.32, yPtr[4].AsDouble(), delta);
+        }
     }
 
     [Duplicate(typeof(complexf))]
@@ -344,9 +484,42 @@ namespace MathKernel.LinearAlgebra.Tests
             yPtr[4] = 1.4f;
         }
 
+        private void GetMatrices(
+            out Matrix<complexf> A,
+            out Matrix<complexf> B,
+            out complexf* APtr,
+            out complexf* BPtr)
+        {
+            A = Matrix.Create(
+                new complexf[]
+                {
+                    1.5f, 1.6f,
+                    1.7f, 1.8f
+                },
+                2, 2);
+            B = Matrix.Create(
+                new complexf[]
+                {
+                    0,
+                    1.9f, 2.1f, 0,
+                    2.2f, 2.3f, 0
+                },
+                new MatrixDescriptor(2, 2, 1, 3));
+            APtr = (complexf*)bytes + 4 * sizeof(complexf);
+            APtr[0] = 1.5f;
+            APtr[1] = 1.6f;
+            APtr[2] = 1.7f;
+            APtr[3] = 1.8f;
+            BPtr = (complexf*)bytes + 8 * sizeof(complexf);
+            BPtr[0] = 1.9f;
+            BPtr[1] = 2.1f;
+            BPtr[2] = 2.2f;
+            BPtr[3] = 2.3f;
+        }
+
         [DataTestMethod]
         [DataRow(null)]
-        public void Level1(complexf? dataType)
+        public void Level1(complexf? value)
         {
             Vector<complexf> x;
             Vector<complexf> y;
@@ -454,6 +627,43 @@ namespace MathKernel.LinearAlgebra.Tests
             Assert.AreEqual(1, iAMax);
             Assert.AreEqual(0, iAMin);
         }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        public void Level2(complexf? value)
+        {
+            Vector<complexf> x;
+            Vector<complexf> y;
+            complexf* xPtr;
+            complexf* yPtr;
+            Matrix<complexf> A;
+            Matrix<complexf> B;
+            complexf* APtr;
+            complexf* BPtr;
+
+            // GEMV
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            GetMatrices(out A, out B, out APtr, out BPtr);
+            BLAS.GEMV(1f, A, x, 1f, y);
+            Assert.AreEqual(4.87, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(5.43, y.Storage[4].AsDouble(), delta);
+            BLAS.GEMV(1f, A.Descriptor, APtr, x.Descriptor, xPtr, 1f, y.Descriptor, yPtr);
+            Assert.AreEqual(4.87, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(5.43, yPtr[4].AsDouble(), delta);
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            GetMatrices(out A, out B, out APtr, out BPtr);
+            BLAS.GEMV(1f, A.Transpose(), x, 1f, y);
+            Assert.AreEqual(4.99, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(5.32, y.Storage[4].AsDouble(), delta);
+            BLAS.GEMV(
+                1f,
+                A.Descriptor.Transpose(), APtr,
+                x.Descriptor, xPtr,
+                1f,
+                y.Descriptor, yPtr);
+            Assert.AreEqual(4.99, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(5.32, yPtr[4].AsDouble(), delta);
+        }
     }
 
     [Duplicate(typeof(complex))]
@@ -479,9 +689,42 @@ namespace MathKernel.LinearAlgebra.Tests
             yPtr[4] = 1.4f;
         }
 
+        private void GetMatrices(
+            out Matrix<complex> A,
+            out Matrix<complex> B,
+            out complex* APtr,
+            out complex* BPtr)
+        {
+            A = Matrix.Create(
+                new complex[]
+                {
+                    1.5f, 1.6f,
+                    1.7f, 1.8f
+                },
+                2, 2);
+            B = Matrix.Create(
+                new complex[]
+                {
+                    0,
+                    1.9f, 2.1f, 0,
+                    2.2f, 2.3f, 0
+                },
+                new MatrixDescriptor(2, 2, 1, 3));
+            APtr = (complex*)bytes + 4 * sizeof(complex);
+            APtr[0] = 1.5f;
+            APtr[1] = 1.6f;
+            APtr[2] = 1.7f;
+            APtr[3] = 1.8f;
+            BPtr = (complex*)bytes + 8 * sizeof(complex);
+            BPtr[0] = 1.9f;
+            BPtr[1] = 2.1f;
+            BPtr[2] = 2.2f;
+            BPtr[3] = 2.3f;
+        }
+
         [DataTestMethod]
         [DataRow(null)]
-        public void Level1(complex? dataType)
+        public void Level1(complex? value)
         {
             Vector<complex> x;
             Vector<complex> y;
@@ -588,6 +831,43 @@ namespace MathKernel.LinearAlgebra.Tests
             iAMin = BLAS.IAMin(y.Descriptor, yPtr);
             Assert.AreEqual(1, iAMax);
             Assert.AreEqual(0, iAMin);
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        public void Level2(complex? value)
+        {
+            Vector<complex> x;
+            Vector<complex> y;
+            complex* xPtr;
+            complex* yPtr;
+            Matrix<complex> A;
+            Matrix<complex> B;
+            complex* APtr;
+            complex* BPtr;
+
+            // GEMV
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            GetMatrices(out A, out B, out APtr, out BPtr);
+            BLAS.GEMV(1f, A, x, 1f, y);
+            Assert.AreEqual(4.87, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(5.43, y.Storage[4].AsDouble(), delta);
+            BLAS.GEMV(1f, A.Descriptor, APtr, x.Descriptor, xPtr, 1f, y.Descriptor, yPtr);
+            Assert.AreEqual(4.87, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(5.43, yPtr[4].AsDouble(), delta);
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            GetMatrices(out A, out B, out APtr, out BPtr);
+            BLAS.GEMV(1f, A.Transpose(), x, 1f, y);
+            Assert.AreEqual(4.99, y.Storage[1].AsDouble(), delta);
+            Assert.AreEqual(5.32, y.Storage[4].AsDouble(), delta);
+            BLAS.GEMV(
+                1f,
+                A.Descriptor.Transpose(), APtr,
+                x.Descriptor, xPtr,
+                1f,
+                y.Descriptor, yPtr);
+            Assert.AreEqual(4.99, yPtr[1].AsDouble(), delta);
+            Assert.AreEqual(5.32, yPtr[4].AsDouble(), delta);
         }
     }
 
