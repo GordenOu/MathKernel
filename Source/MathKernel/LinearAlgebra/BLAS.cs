@@ -907,6 +907,40 @@ namespace MathKernel.LinearAlgebra
 
         #endregion
 
+        #region ger
+
+        private static void ger(
+            float alpha,
+            VectorDescriptor xDescriptor, float* x,
+            VectorDescriptor yDescriptor, float* y,
+            MatrixDescriptor ADescriptor, float* A)
+        {
+            NativeMethods.cblas_sger(
+                (CBLAS_LAYOUT)ADescriptor.Layout,
+                ADescriptor.Rows, ADescriptor.Columns,
+                alpha,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                y + yDescriptor.Offset, yDescriptor.Stride,
+                A + ADescriptor.Offset, ADescriptor.Stride);
+        }
+
+        private static void ger(
+            double alpha,
+            VectorDescriptor xDescriptor, double* x,
+            VectorDescriptor yDescriptor, double* y,
+            MatrixDescriptor ADescriptor, double* A)
+        {
+            NativeMethods.cblas_dger(
+                (CBLAS_LAYOUT)ADescriptor.Layout,
+                ADescriptor.Rows, ADescriptor.Columns,
+                alpha,
+                x + xDescriptor.Offset, xDescriptor.Stride,
+                y + yDescriptor.Offset, yDescriptor.Stride,
+                A + ADescriptor.Offset, ADescriptor.Stride);
+        }
+
+        #endregion
+
         #endregion
     }
 
@@ -2049,6 +2083,8 @@ namespace MathKernel.LinearAlgebra
     [RealTypeDuplicate(typeof(float))]
     public static unsafe partial class BLAS
     {
+        #region Level 1
+
         /// <summary>
         /// Sum(Abs(x)).
         /// </summary>
@@ -2216,11 +2252,58 @@ namespace MathKernel.LinearAlgebra
                 rotm(x.Descriptor, xPtr, y.Descriptor, yPtr, h11, h12, h21, h22);
             }
         }
+
+        #endregion
+
+        #region Level 2
+
+        /// <summary>
+        /// A = alpha * x * y.Transpose() + A.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void GER(
+            float alpha,
+            VectorDescriptor xDescriptor, float* x,
+            VectorDescriptor yDescriptor, float* y,
+            MatrixDescriptor ADescriptor, float* A)
+        {
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+            Requires.NotNull(ADescriptor, nameof(ADescriptor));
+            Requires.NotNullPtr(A, nameof(A));
+
+            ger(alpha, xDescriptor, x, yDescriptor, y, ADescriptor, A);
+        }
+
+        /// <summary>
+        /// A = alpha * x * y.Transpose() + A.
+        /// </summary>
+        public static void GER(
+            float alpha,
+            Vector<float> x,
+            Vector<float> y,
+            Matrix<float> A)
+        {
+            Requires.NotNull(A, nameof(A));
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+
+            fixed (float* xPtr = x.Storage, yPtr = y.Storage, APtr = A.Storage)
+            {
+                ger(alpha, x.Descriptor, xPtr, y.Descriptor, yPtr, A.Descriptor, APtr);
+            }
+        }
+
+        #endregion
     }
 
     [RealTypeDuplicate(typeof(double))]
     public static unsafe partial class BLAS
     {
+        #region Level 1
+
         /// <summary>
         /// Sum(Abs(x)).
         /// </summary>
@@ -2388,6 +2471,51 @@ namespace MathKernel.LinearAlgebra
                 rotm(x.Descriptor, xPtr, y.Descriptor, yPtr, h11, h12, h21, h22);
             }
         }
+
+        #endregion
+
+        #region Level 2
+
+        /// <summary>
+        /// A = alpha * x * y.Transpose() + A.
+        /// </summary>
+        [CLSCompliant(false)]
+        public static void GER(
+            double alpha,
+            VectorDescriptor xDescriptor, double* x,
+            VectorDescriptor yDescriptor, double* y,
+            MatrixDescriptor ADescriptor, double* A)
+        {
+            Requires.NotNull(xDescriptor, nameof(xDescriptor));
+            Requires.NotNullPtr(x, nameof(x));
+            Requires.NotNull(yDescriptor, nameof(yDescriptor));
+            Requires.NotNullPtr(y, nameof(y));
+            Requires.NotNull(ADescriptor, nameof(ADescriptor));
+            Requires.NotNullPtr(A, nameof(A));
+
+            ger(alpha, xDescriptor, x, yDescriptor, y, ADescriptor, A);
+        }
+
+        /// <summary>
+        /// A = alpha * x * y.Transpose() + A.
+        /// </summary>
+        public static void GER(
+            double alpha,
+            Vector<double> x,
+            Vector<double> y,
+            Matrix<double> A)
+        {
+            Requires.NotNull(A, nameof(A));
+            Requires.NotNull(x, nameof(x));
+            Requires.NotNull(y, nameof(y));
+
+            fixed (double* xPtr = x.Storage, yPtr = y.Storage, APtr = A.Storage)
+            {
+                ger(alpha, x.Descriptor, xPtr, y.Descriptor, yPtr, A.Descriptor, APtr);
+            }
+        }
+
+        #endregion
     }
 
     [ComplexTypeDuplicate(typeof(complexf))]

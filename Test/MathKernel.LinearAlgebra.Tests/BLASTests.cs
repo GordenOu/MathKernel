@@ -101,10 +101,10 @@ namespace MathKernel.LinearAlgebra.Tests
             APtr[2] = 1.7f;
             APtr[3] = 1.8f;
             BPtr = (float*)bytes + 8 * sizeof(float);
-            BPtr[0] = 1.9f;
-            BPtr[1] = 2.1f;
-            BPtr[2] = 2.2f;
-            BPtr[3] = 2.3f;
+            BPtr[1] = 1.9f;
+            BPtr[2] = 2.1f;
+            BPtr[4] = 2.2f;
+            BPtr[5] = 2.3f;
         }
 
         [DataTestMethod]
@@ -306,10 +306,10 @@ namespace MathKernel.LinearAlgebra.Tests
             APtr[2] = 1.7f;
             APtr[3] = 1.8f;
             BPtr = (double*)bytes + 8 * sizeof(double);
-            BPtr[0] = 1.9f;
-            BPtr[1] = 2.1f;
-            BPtr[2] = 2.2f;
-            BPtr[3] = 2.3f;
+            BPtr[1] = 1.9f;
+            BPtr[2] = 2.1f;
+            BPtr[4] = 2.2f;
+            BPtr[5] = 2.3f;
         }
 
         [DataTestMethod]
@@ -511,10 +511,10 @@ namespace MathKernel.LinearAlgebra.Tests
             APtr[2] = 1.7f;
             APtr[3] = 1.8f;
             BPtr = (complexf*)bytes + 8 * sizeof(complexf);
-            BPtr[0] = 1.9f;
-            BPtr[1] = 2.1f;
-            BPtr[2] = 2.2f;
-            BPtr[3] = 2.3f;
+            BPtr[1] = 1.9f;
+            BPtr[2] = 2.1f;
+            BPtr[4] = 2.2f;
+            BPtr[5] = 2.3f;
         }
 
         [DataTestMethod]
@@ -716,10 +716,10 @@ namespace MathKernel.LinearAlgebra.Tests
             APtr[2] = 1.7f;
             APtr[3] = 1.8f;
             BPtr = (complex*)bytes + 8 * sizeof(complex);
-            BPtr[0] = 1.9f;
-            BPtr[1] = 2.1f;
-            BPtr[2] = 2.2f;
-            BPtr[3] = 2.3f;
+            BPtr[1] = 1.9f;
+            BPtr[2] = 2.1f;
+            BPtr[4] = 2.2f;
+            BPtr[5] = 2.3f;
         }
 
         [DataTestMethod]
@@ -916,6 +916,44 @@ namespace MathKernel.LinearAlgebra.Tests
                 Assert.AreEqual(1.2f * h21 + 1.4f * h22, yPtr[4], delta);
             }
         }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        public void Level2(Lazy<float> dataType)
+        {
+            Vector<float> x;
+            Vector<float> y;
+            float* xPtr;
+            float* yPtr;
+            Matrix<float> A;
+            Matrix<float> B;
+            float* APtr;
+            float* BPtr;
+
+            // GER
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            GetMatrices(out A, out B, out APtr, out BPtr);
+            BLAS.GER(1, x, y, A);
+            BLAS.GER(1, x, y, B.Transpose());
+            Assert.AreEqual(2.93, A.Storage[0], delta);
+            Assert.AreEqual(3.14, A.Storage[1], delta);
+            Assert.AreEqual(3.26, A.Storage[2], delta);
+            Assert.AreEqual(3.48, A.Storage[3], delta);
+            Assert.AreEqual(3.33, B.Storage[1], delta);
+            Assert.AreEqual(3.66, B.Storage[2], delta);
+            Assert.AreEqual(3.74, B.Storage[4], delta);
+            Assert.AreEqual(3.98, B.Storage[5], delta);
+            BLAS.GER(1, x.Descriptor, xPtr, y.Descriptor, yPtr, A.Descriptor, APtr);
+            BLAS.GER(1, x.Descriptor, xPtr, y.Descriptor, yPtr, B.Descriptor.Transpose(), BPtr);
+            Assert.AreEqual(2.93, APtr[0], delta);
+            Assert.AreEqual(3.14, APtr[1], delta);
+            Assert.AreEqual(3.26, APtr[2], delta);
+            Assert.AreEqual(3.48, APtr[3], delta);
+            Assert.AreEqual(3.33, BPtr[1], delta);
+            Assert.AreEqual(3.66, BPtr[2], delta);
+            Assert.AreEqual(3.74, BPtr[4], delta);
+            Assert.AreEqual(3.98, BPtr[5], delta);
+        }
     }
 
     [RealTypeDuplicate(typeof(double))]
@@ -962,6 +1000,44 @@ namespace MathKernel.LinearAlgebra.Tests
                 Assert.AreEqual(1.1f * h21 + 1.3f * h22, yPtr[1], delta);
                 Assert.AreEqual(1.2f * h21 + 1.4f * h22, yPtr[4], delta);
             }
+        }
+
+        [DataTestMethod]
+        [DataRow(null)]
+        public void Level2(Lazy<double> dataType)
+        {
+            Vector<double> x;
+            Vector<double> y;
+            double* xPtr;
+            double* yPtr;
+            Matrix<double> A;
+            Matrix<double> B;
+            double* APtr;
+            double* BPtr;
+
+            // GER
+            GetVectors(out x, out y, out xPtr, out yPtr);
+            GetMatrices(out A, out B, out APtr, out BPtr);
+            BLAS.GER(1, x, y, A);
+            BLAS.GER(1, x, y, B.Transpose());
+            Assert.AreEqual(2.93, A.Storage[0], delta);
+            Assert.AreEqual(3.14, A.Storage[1], delta);
+            Assert.AreEqual(3.26, A.Storage[2], delta);
+            Assert.AreEqual(3.48, A.Storage[3], delta);
+            Assert.AreEqual(3.33, B.Storage[1], delta);
+            Assert.AreEqual(3.66, B.Storage[2], delta);
+            Assert.AreEqual(3.74, B.Storage[4], delta);
+            Assert.AreEqual(3.98, B.Storage[5], delta);
+            BLAS.GER(1, x.Descriptor, xPtr, y.Descriptor, yPtr, A.Descriptor, APtr);
+            BLAS.GER(1, x.Descriptor, xPtr, y.Descriptor, yPtr, B.Descriptor.Transpose(), BPtr);
+            Assert.AreEqual(2.93, APtr[0], delta);
+            Assert.AreEqual(3.14, APtr[1], delta);
+            Assert.AreEqual(3.26, APtr[2], delta);
+            Assert.AreEqual(3.48, APtr[3], delta);
+            Assert.AreEqual(3.33, BPtr[1], delta);
+            Assert.AreEqual(3.66, BPtr[2], delta);
+            Assert.AreEqual(3.74, BPtr[4], delta);
+            Assert.AreEqual(3.98, BPtr[5], delta);
         }
     }
 
