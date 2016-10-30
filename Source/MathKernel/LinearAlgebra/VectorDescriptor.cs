@@ -1,32 +1,47 @@
-﻿using Core.Diagnostics;
+﻿using System.Diagnostics;
+using Core.Diagnostics;
 
 namespace MathKernel.LinearAlgebra
 {
     public class VectorDescriptor
     {
-        public int Size { get; }
+        public int Size { get; private set; }
 
-        public int Offset { get; }
+        public int Stride { get; private set; }
 
-        public int Stride { get; }
+        private VectorDescriptor() { }
 
-        public VectorDescriptor(int size, int offset, int stride)
+        public VectorDescriptor(int size, int stride)
         {
             Requires.Positive(size, nameof(size));
-            Requires.NonNegative(offset, nameof(offset));
             Requires.Positive(stride, nameof(stride));
 
             Size = size;
-            Offset = offset;
             Stride = stride;
         }
 
-        public VectorDescriptor(int size, int offset)
-            : this(size, offset, 1)
+        public VectorDescriptor(int size)
+            : this(size, 1)
         { }
 
-        public VectorDescriptor(int size)
-            : this(size, 0, 1)
-        { }
+        public ConjugatedVectorDescriptor Conjugate()
+        {
+            return new ConjugatedVectorDescriptor(this);
+        }
+    }
+
+    public class ConjugatedVectorDescriptor
+    {
+        public int Size { get; }
+
+        public int Stride { get; }
+
+        internal ConjugatedVectorDescriptor(VectorDescriptor descriptor)
+        {
+            Debug.Assert(descriptor != null);
+
+            Size = descriptor.Size;
+            Stride = descriptor.Stride;
+        }
     }
 }

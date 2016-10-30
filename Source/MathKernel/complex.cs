@@ -214,17 +214,22 @@ namespace MathKernel
 
         public static implicit operator complex(double value)
         {
-            return new complex((float)value, 0);
+            return new complex(value, 0);
+        }
+
+        public static implicit operator complex(complexf value)
+        {
+            return new complex(value.Real, value.Imaginary);
         }
 
         public static explicit operator complex(BigInteger value)
         {
-            return new complex((float)value, 0);
+            return new complex((double)value, 0);
         }
 
         public static explicit operator complex(decimal value)
         {
-            return new complex((float)value, 0);
+            return new complex((double)value, 0);
         }
     }
 }

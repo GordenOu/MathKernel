@@ -8,19 +8,21 @@ namespace MathKernel.LinearAlgebra
     public class Matrix<T>
         where T : struct
     {
+        public MatrixDescriptor Descriptor { get; private set; }
+
         public T[] Storage { get; private set; }
 
-        public MatrixDescriptor Descriptor { get; private set; }
+        public int Offset { get; private set; }
 
         private Matrix() { }
 
-        internal Matrix(T[] storage, MatrixDescriptor descriptor)
+        internal Matrix(MatrixDescriptor descriptor, T[] storage, int offset)
         {
-            Requires.NotNull(storage, nameof(storage));
             Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNull(storage, nameof(storage));
+            Requires.NonNegative(offset, nameof(offset));
             int rows = descriptor.Rows;
             int columns = descriptor.Columns;
-            int offset = descriptor.Offset;
             int stride = descriptor.Stride;
             switch (descriptor.Layout)
             {
@@ -41,25 +43,18 @@ namespace MathKernel.LinearAlgebra
                     break;
             }
 
-            Storage = storage;
             Descriptor = descriptor;
+            Storage = storage;
+            Offset = offset;
         }
 
         public Matrix<T> Transpose()
         {
             return new Matrix<T>
             {
+                Descriptor = Descriptor.Transpose(),
                 Storage = Storage,
-                Descriptor = Descriptor.Transpose()
-            };
-        }
-
-        public Matrix<T> ConjugateTranspose()
-        {
-            return new Matrix<T>
-            {
-                Storage = Storage,
-                Descriptor = Descriptor.ConjugateTranspose()
+                Offset = Offset
             };
         }
     }
@@ -67,72 +62,68 @@ namespace MathKernel.LinearAlgebra
     [Duplicate(typeof(float))]
     public static partial class Matrix
     {
-        public static Matrix<float> Create(float[] storage, MatrixDescriptor descriptor)
+        public static Matrix<float> Create(
+            MatrixDescriptor descriptor,
+            float[] storage,
+            int offset)
         {
-            return new Matrix<float>(storage, descriptor);
+            return new Matrix<float>(descriptor, storage, offset);
         }
 
-        public static Matrix<float> Create(
-            float[] storage,
-            int rows,
-            int columns,
-            MatrixLayout layout = MatrixLayout.RowMajor)
+        public static Matrix<float> Create(MatrixDescriptor descriptor, float[] storage)
         {
-            return new Matrix<float>(storage, new MatrixDescriptor(rows, columns, layout));
+            return new Matrix<float>(descriptor, storage, 0);
         }
     }
 
     [Duplicate(typeof(double))]
     public static partial class Matrix
     {
-        public static Matrix<double> Create(double[] storage, MatrixDescriptor descriptor)
+        public static Matrix<double> Create(
+            MatrixDescriptor descriptor,
+            double[] storage,
+            int offset)
         {
-            return new Matrix<double>(storage, descriptor);
+            return new Matrix<double>(descriptor, storage, offset);
         }
 
-        public static Matrix<double> Create(
-            double[] storage,
-            int rows,
-            int columns,
-            MatrixLayout layout = MatrixLayout.RowMajor)
+        public static Matrix<double> Create(MatrixDescriptor descriptor, double[] storage)
         {
-            return new Matrix<double>(storage, new MatrixDescriptor(rows, columns, layout));
+            return new Matrix<double>(descriptor, storage, 0);
         }
     }
 
     [Duplicate(typeof(complexf))]
     public static partial class Matrix
     {
-        public static Matrix<complexf> Create(complexf[] storage, MatrixDescriptor descriptor)
+        public static Matrix<complexf> Create(
+            MatrixDescriptor descriptor,
+            complexf[] storage,
+            int offset)
         {
-            return new Matrix<complexf>(storage, descriptor);
+            return new Matrix<complexf>(descriptor, storage, offset);
         }
 
-        public static Matrix<complexf> Create(
-            complexf[] storage,
-            int rows,
-            int columns,
-            MatrixLayout layout = MatrixLayout.RowMajor)
+        public static Matrix<complexf> Create(MatrixDescriptor descriptor, complexf[] storage)
         {
-            return new Matrix<complexf>(storage, new MatrixDescriptor(rows, columns, layout));
+            return new Matrix<complexf>(descriptor, storage, 0);
         }
     }
 
     [Duplicate(typeof(complex))]
     public static partial class Matrix
     {
-        public static Matrix<complex> Create(complex[] storage, MatrixDescriptor descriptor)
+        public static Matrix<complex> Create(
+            MatrixDescriptor descriptor,
+            complex[] storage,
+            int offset)
         {
-            return new Matrix<complex>(storage, descriptor);
+            return new Matrix<complex>(descriptor, storage, offset);
         }
 
-        public static Matrix<complex> Create(
-            complex[] storage,
-            int rows,
-            int columns,
-            MatrixLayout layout = MatrixLayout.RowMajor)
+        public static Matrix<complex> Create(MatrixDescriptor descriptor, complex[] storage)
         {
-            return new Matrix<complex>(storage, new MatrixDescriptor(rows, columns, layout));
+            return new Matrix<complex>(descriptor, storage, 0);
         }
     }
 }

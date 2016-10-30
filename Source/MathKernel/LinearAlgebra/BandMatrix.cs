@@ -9,22 +9,21 @@ namespace MathKernel.LinearAlgebra
     public class BandMatrix<T>
         where T : struct
     {
+        public BandMatrixDescriptor Descriptor { get; private set; }
+
         public T[] Storage { get; private set; }
 
-        public BandMatrixDescriptor Descriptor { get; private set; }
+        public int Offset { get; private set; }
 
         private BandMatrix() { }
 
-        internal BandMatrix(T[] storage, BandMatrixDescriptor descriptor)
+        internal BandMatrix(BandMatrixDescriptor descriptor, T[] storage, int offset)
         {
-            Requires.NotNull(storage, nameof(storage));
             Requires.NotNull(descriptor, nameof(descriptor));
+            Requires.NotNull(storage, nameof(storage));
+            Requires.NonNegative(offset, nameof(offset));
             int rows = descriptor.Rows;
             int columns = descriptor.Columns;
-            int upperBandwidth = descriptor.UpperBandwidth;
-            int lowerBandwidth = descriptor.LowerBandwidth;
-            int bandwidth = upperBandwidth + lowerBandwidth + 1;
-            int offset = descriptor.Offset;
             int stride = descriptor.Stride;
             switch (descriptor.Layout)
             {
@@ -45,25 +44,18 @@ namespace MathKernel.LinearAlgebra
                     break;
             }
 
-            Storage = storage;
             Descriptor = descriptor;
+            Storage = storage;
+            Offset = offset;
         }
 
         public BandMatrix<T> Transpose()
         {
             return new BandMatrix<T>
             {
+                Descriptor = Descriptor.Transpose(),
                 Storage = Storage,
-                Descriptor = Descriptor.Transpose()
-            };
-        }
-
-        public BandMatrix<T> ConjugateTranspose()
-        {
-            return new BandMatrix<T>
-            {
-                Storage = Storage,
-                Descriptor = Descriptor.ConjugateTranspose()
+                Offset = Offset
             };
         }
     }
@@ -72,10 +64,18 @@ namespace MathKernel.LinearAlgebra
     public static partial class BandMatrix
     {
         public static BandMatrix<float> Create(
+            BandMatrixDescriptor descriptor,
             float[] storage,
-            BandMatrixDescriptor descriptor)
+            int offset)
         {
-            return new BandMatrix<float>(storage, descriptor);
+            return new BandMatrix<float>(descriptor, storage, offset);
+        }
+
+        public static BandMatrix<float> Create(
+            BandMatrixDescriptor descriptor,
+            float[] storage)
+        {
+            return new BandMatrix<float>(descriptor, storage, 0);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace MathKernel.LinearAlgebra
             Debug.Assert(descriptor.Layout == MatrixLayout.RowMajor);
 
             var storage = new float[descriptor.Rows * descriptor.Stride];
-            int offset1 = matrix.Descriptor.Offset;
+            int offset1 = matrix.Offset;
             int offset2 = 0;
             for (int i = 0; i < descriptor.Rows; i++)
             {
@@ -129,9 +129,7 @@ namespace MathKernel.LinearAlgebra
                 offset2 += descriptor.Stride;
             }
 
-            return transposed
-                ? new BandMatrix<float>(storage, descriptor.Transpose())
-                : new BandMatrix<float>(storage, descriptor);
+            return Create(transposed ? descriptor.Transpose() : descriptor, storage);
         }
     }
 
@@ -139,10 +137,18 @@ namespace MathKernel.LinearAlgebra
     public static partial class BandMatrix
     {
         public static BandMatrix<double> Create(
+            BandMatrixDescriptor descriptor,
             double[] storage,
-            BandMatrixDescriptor descriptor)
+            int offset)
         {
-            return new BandMatrix<double>(storage, descriptor);
+            return new BandMatrix<double>(descriptor, storage, offset);
+        }
+
+        public static BandMatrix<double> Create(
+            BandMatrixDescriptor descriptor,
+            double[] storage)
+        {
+            return new BandMatrix<double>(descriptor, storage, 0);
         }
 
         /// <summary>
@@ -180,7 +186,7 @@ namespace MathKernel.LinearAlgebra
             Debug.Assert(descriptor.Layout == MatrixLayout.RowMajor);
 
             var storage = new double[descriptor.Rows * descriptor.Stride];
-            int offset1 = matrix.Descriptor.Offset;
+            int offset1 = matrix.Offset;
             int offset2 = 0;
             for (int i = 0; i < descriptor.Rows; i++)
             {
@@ -196,9 +202,7 @@ namespace MathKernel.LinearAlgebra
                 offset2 += descriptor.Stride;
             }
 
-            return transposed
-                ? new BandMatrix<double>(storage, descriptor.Transpose())
-                : new BandMatrix<double>(storage, descriptor);
+            return Create(transposed ? descriptor.Transpose() : descriptor, storage);
         }
     }
 
@@ -206,10 +210,18 @@ namespace MathKernel.LinearAlgebra
     public static partial class BandMatrix
     {
         public static BandMatrix<complexf> Create(
+            BandMatrixDescriptor descriptor,
             complexf[] storage,
-            BandMatrixDescriptor descriptor)
+            int offset)
         {
-            return new BandMatrix<complexf>(storage, descriptor);
+            return new BandMatrix<complexf>(descriptor, storage, offset);
+        }
+
+        public static BandMatrix<complexf> Create(
+            BandMatrixDescriptor descriptor,
+            complexf[] storage)
+        {
+            return new BandMatrix<complexf>(descriptor, storage, 0);
         }
 
         /// <summary>
@@ -247,7 +259,7 @@ namespace MathKernel.LinearAlgebra
             Debug.Assert(descriptor.Layout == MatrixLayout.RowMajor);
 
             var storage = new complexf[descriptor.Rows * descriptor.Stride];
-            int offset1 = matrix.Descriptor.Offset;
+            int offset1 = matrix.Offset;
             int offset2 = 0;
             for (int i = 0; i < descriptor.Rows; i++)
             {
@@ -263,9 +275,7 @@ namespace MathKernel.LinearAlgebra
                 offset2 += descriptor.Stride;
             }
 
-            return transposed
-                ? new BandMatrix<complexf>(storage, descriptor.Transpose())
-                : new BandMatrix<complexf>(storage, descriptor);
+            return Create(transposed ? descriptor.Transpose() : descriptor, storage);
         }
     }
 
@@ -273,10 +283,18 @@ namespace MathKernel.LinearAlgebra
     public static partial class BandMatrix
     {
         public static BandMatrix<complex> Create(
+            BandMatrixDescriptor descriptor,
             complex[] storage,
-            BandMatrixDescriptor descriptor)
+            int offset)
         {
-            return new BandMatrix<complex>(storage, descriptor);
+            return new BandMatrix<complex>(descriptor, storage, offset);
+        }
+
+        public static BandMatrix<complex> Create(
+            BandMatrixDescriptor descriptor,
+            complex[] storage)
+        {
+            return new BandMatrix<complex>(descriptor, storage, 0);
         }
 
         /// <summary>
@@ -314,7 +332,7 @@ namespace MathKernel.LinearAlgebra
             Debug.Assert(descriptor.Layout == MatrixLayout.RowMajor);
 
             var storage = new complex[descriptor.Rows * descriptor.Stride];
-            int offset1 = matrix.Descriptor.Offset;
+            int offset1 = matrix.Offset;
             int offset2 = 0;
             for (int i = 0; i < descriptor.Rows; i++)
             {
@@ -330,9 +348,7 @@ namespace MathKernel.LinearAlgebra
                 offset2 += descriptor.Stride;
             }
 
-            return transposed
-                ? new BandMatrix<complex>(storage, descriptor.Transpose())
-                : new BandMatrix<complex>(storage, descriptor);
+            return Create(transposed ? descriptor.Transpose() : descriptor, storage);
         }
     }
 }

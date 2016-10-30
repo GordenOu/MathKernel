@@ -12,13 +12,9 @@ namespace MathKernel.LinearAlgebra
 
         public int LowerBandwidth { get; private set; }
 
-        public int Offset { get; private set; }
-
         public int Stride { get; private set; }
 
         public MatrixLayout Layout { get; private set; }
-
-        public bool IsConjugated { get; private set; }
 
         private BandMatrixDescriptor() { }
 
@@ -27,7 +23,6 @@ namespace MathKernel.LinearAlgebra
             int columns,
             int upperBandwidth,
             int lowerBandwidth,
-            int offset,
             int stride,
             MatrixLayout layout = MatrixLayout.RowMajor)
         {
@@ -37,7 +32,6 @@ namespace MathKernel.LinearAlgebra
             Requires.Range(upperBandwidth, nameof(upperBandwidth), upperBandwidth < columns);
             Requires.NonNegative(lowerBandwidth, nameof(lowerBandwidth));
             Requires.Range(lowerBandwidth, nameof(lowerBandwidth), lowerBandwidth < rows);
-            Requires.NonNegative(offset, nameof(offset));
             Requires.Range(stride, nameof(stride), stride >= upperBandwidth + lowerBandwidth + 1);
             Requires.Range(
                 layout,
@@ -48,7 +42,6 @@ namespace MathKernel.LinearAlgebra
             Columns = columns;
             UpperBandwidth = upperBandwidth;
             LowerBandwidth = lowerBandwidth;
-            Offset = offset;
             Stride = stride;
             Layout = layout;
         }
@@ -58,57 +51,27 @@ namespace MathKernel.LinearAlgebra
             int columns,
             int upperBandwidth,
             int lowerBandwidth,
-            int offset,
             MatrixLayout layout = MatrixLayout.RowMajor)
             : this(
                   rows,
                   columns,
                   upperBandwidth,
                   lowerBandwidth,
-                  offset,
-                  upperBandwidth + lowerBandwidth + 1,
-                  layout)
-        { }
-
-        public BandMatrixDescriptor(
-            int rows,
-            int columns,
-            int upperBandwidth,
-            int lowerBandwidth,
-            MatrixLayout layout = MatrixLayout.RowMajor)
-            : this(
-                  rows,
-                  columns,
-                  upperBandwidth,
-                  lowerBandwidth,
-                  0,
                   upperBandwidth + lowerBandwidth + 1,
                   layout)
         { }
 
         public BandMatrixDescriptor Transpose()
         {
-            var layout = Layout == MatrixLayout.RowMajor
-                ? MatrixLayout.ColumnMajor
-                : MatrixLayout.RowMajor;
             return new BandMatrixDescriptor
             {
                 Rows = Columns,
                 Columns = Rows,
                 UpperBandwidth = LowerBandwidth,
                 LowerBandwidth = UpperBandwidth,
-                Offset = Offset,
                 Stride = Stride,
-                Layout = layout,
-                IsConjugated = IsConjugated
+                Layout = Layout.Transpose()
             };
-        }
-
-        public BandMatrixDescriptor ConjugateTranspose()
-        {
-            var descriptor = Transpose();
-            descriptor.IsConjugated = !IsConjugated;
-            return descriptor;
         }
     }
 }

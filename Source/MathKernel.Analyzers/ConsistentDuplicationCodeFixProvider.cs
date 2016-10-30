@@ -63,7 +63,7 @@ namespace MathKernel.Analyzers
             string rewrite)
         {
             var syntaxTree = root.SyntaxTree;
-            var text = syntaxTree.GetText().Replace(declaration.FullSpan, rewrite);
+            var text = syntaxTree.GetText().Replace(declaration.Span, rewrite);
             syntaxTree = syntaxTree.WithChangedText(text);
             return Task.FromResult(document.WithSyntaxRoot(syntaxTree.GetRoot()));
         }

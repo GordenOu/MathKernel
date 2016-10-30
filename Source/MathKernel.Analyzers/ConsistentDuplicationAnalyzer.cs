@@ -90,80 +90,86 @@ namespace MathKernel.Analyzers
                 return;
             }
 
-            // Retrieve partial class declarations.
-            var partialClassDeclarations = namedTypeSymbol.DeclaringSyntaxReferences
-                .Select(reference => reference.GetSyntax() as ClassDeclarationSyntax)
-                .ToArray();
-            if (partialClassDeclarations.Length <= 1)
+            foreach (var group in from reference in namedTypeSymbol.DeclaringSyntaxReferences
+                                  group reference by reference.SyntaxTree.FilePath into g
+                                  select g)
             {
-                return;
-            }
+                // Retrieve partial class declarations.
+                var partialClassDeclarations = group
+                    .Select(reference => reference.GetSyntax() as ClassDeclarationSyntax)
+                    .ToArray();
+                if (partialClassDeclarations.Length <= 1)
+                {
+                    continue;
+                }
 
-            // Associate partial class declarations for each data type.
-            var partialClasses = new Dictionary<DataType, ClassDeclarationSyntax>();
-            foreach (var declaration in partialClassDeclarations)
-            {
-                var duplicateAttribute = declaration.AttributeLists
-                    .SelectMany(list => list.Attributes)
-                    .SingleOrDefault(attribute => attribute.Name.ToString() == attributeName);
-                if (duplicateAttribute == null)
+                // Associate partial class declarations for each data type.
+                var partialClasses = new Dictionary<DataType, ClassDeclarationSyntax>();
+                foreach (var declaration in partialClassDeclarations)
                 {
-                    continue;
+                    var duplicateAttribute = declaration.AttributeLists
+                        .SelectMany(list => list.Attributes)
+                        .SingleOrDefault(attribute => attribute.Name.ToString() == attributeName);
+                    if (duplicateAttribute == null)
+                    {
+                        continue;
+                    }
+                    var argument = duplicateAttribute.ArgumentList.Arguments.FirstOrDefault();
+                    if (argument == null)
+                    {
+                        continue;
+                    }
+                    var typeOfExpressionSyntax = argument
+                        .ChildNodes()
+                        .FirstOrDefault()
+                        as TypeOfExpressionSyntax;
+                    if (typeOfExpressionSyntax == null)
+                    {
+                        continue;
+                    }
+                    string dataTypeName = typeOfExpressionSyntax.Type.ToString();
+                    if (!typeNames.Contains(dataTypeName))
+                    {
+                        continue;
+                    }
+                    var dataType = GetDataType(dataTypeName);
+                    if (partialClasses.Keys.Contains(dataType))
+                    {
+                        continue;
+                    }
+                    partialClasses[dataType] = declaration;
                 }
-                var argument = duplicateAttribute.ArgumentList.Arguments.FirstOrDefault();
-                if (argument == null)
-                {
-                    continue;
-                }
-                var typeOfExpressionSyntax = argument
-                    .ChildNodes()
-                    .FirstOrDefault()
-                    as TypeOfExpressionSyntax;
-                if (typeOfExpressionSyntax == null)
-                {
-                    continue;
-                }
-                string dataTypeName = typeOfExpressionSyntax.Type.ToString();
-                if (!typeNames.Contains(dataTypeName))
-                {
-                    continue;
-                }
-                var dataType = GetDataType(dataTypeName);
-                if (partialClasses.Keys.Contains(dataType))
-                {
-                    return;
-                }
-                partialClasses[dataType] = declaration;
-            }
 
-            // Separate main declaration from others.
-            DataType mainDataType;
-            ClassDeclarationSyntax mainDeclaration;
-            if (partialClasses.TryGetValue(DataType.Float, out mainDeclaration))
-            {
-                mainDataType = DataType.Float;
-            }
-            else if (partialClasses.TryGetValue(DataType.Complexf, out mainDeclaration))
-            {
-                mainDataType = DataType.Complexf;
-            }
-            else
-            {
-                return;
-            }
-            foreach (var keyValue in partialClasses.Where(x => x.Key != mainDataType))
-            {
-                var rewriter = new ChangeDataTypeRewriter(mainDataType, keyValue.Key);
-                var newDeclaration = rewriter.Visit(mainDeclaration);
-                if (keyValue.Value.ToFullString() != newDeclaration.ToFullString())
+                // Separate main declaration from others.
+                DataType mainDataType;
+                ClassDeclarationSyntax mainDeclaration;
+                if (partialClasses.TryGetValue(DataType.Float, out mainDeclaration))
                 {
-                    var builder = ImmutableDictionary.CreateBuilder<string, string>();
-                    builder.Add("rewrite", newDeclaration.ToFullString());
-                    var diagnostic = Diagnostic.Create(
-                        rule,
-                        keyValue.Value.GetLocation(),
-                        properties: builder.ToImmutable());
-                    context.ReportDiagnostic(diagnostic);
+                    mainDataType = DataType.Float;
+                }
+                else if (partialClasses.TryGetValue(DataType.Complexf, out mainDeclaration))
+                {
+                    mainDataType = DataType.Complexf;
+                }
+                else
+                {
+                    continue;
+                }
+                foreach (var keyValue in partialClasses.Where(x => x.Key != mainDataType))
+                {
+                    var rewriter = new ChangeDataTypeRewriter(mainDataType, keyValue.Key);
+                    var newDeclaration = rewriter.Visit(mainDeclaration);
+                    var oldDeclaration = keyValue.Value;
+                    if (oldDeclaration.ToString() != newDeclaration.ToString())
+                    {
+                        var builder = ImmutableDictionary.CreateBuilder<string, string>();
+                        builder.Add("rewrite", newDeclaration.ToString());
+                        var diagnostic = Diagnostic.Create(
+                            rule,
+                            oldDeclaration.GetLocation(),
+                            properties: builder.ToImmutable());
+                        context.ReportDiagnostic(diagnostic);
+                    }
                 }
             }
         }
