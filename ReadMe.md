@@ -2,7 +2,7 @@
 
 |Windows|Ubuntu|
 |:--:|:--:|
-|[![Build Status](https://ouqihao.visualstudio.com/_apis/public/build/definitions/7aefdc78-6fcf-404e-bde3-b65de2ea15b7/4/badge)](https://ouqihao.visualstudio.com/MathKernel/_build)|[![Build Status](http://www.gordenou.net:8111/app/rest/builds/buildType:(id:MathKernel_Build)/statusIcon.svg)](http://www.gordenou.net:8111/viewType.html?buildTypeId=MathKernel_Build&guest=1)|
+|[![Build Status](https://ouqihao.visualstudio.com/_apis/public/build/definitions/7aefdc78-6fcf-404e-bde3-b65de2ea15b7/4/badge)](https://ouqihao.visualstudio.com/MathKernel/_build)|[![Build Status](https://ubuntu.ci.gordenou.net/app/rest/builds/buildType:(id:MathKernel_Build)/statusIcon.svg)](https://ubuntu.ci.gordenou.net/viewType.html?buildTypeId=MathKernel_Build&guest=1)|
 
 Makes the math routines in [Intel Math Kernel Library](https://software.intel.com/intel-mkl/) available in .NET:
 
